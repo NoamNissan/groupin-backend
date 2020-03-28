@@ -16,8 +16,7 @@ function startServer() {
                  ' -e MYSQL_ROOT_PASSWORD='+ config.DB_ROOT_PASSWORD +
                  ' -d ' + config.DB_DOCKER_IMAGE;
 
-    const CMD2 = 'docker cp touchups.sql '+ config.DB_CONTAINER +':/';
-    const CMD3 = 'docker exec '+ config.DB_CONTAINER +' /bin/bash -c "' +
+    const CMD2 = 'docker exec '+ config.DB_CONTAINER +' /bin/bash -c "' +
         'echo \\"CREATE DATABASE IF NOT EXISTS '+ config.DB_NAME +';'+
         'CREATE USER '+ config.DB_USER +' IDENTIFIED BY \''+ config.DB_PASSWORD +'\';'+
         'GRANT ALL PRIVILEGES ON *.* TO \''+ config.DB_USER +'\'@\'%\';\\"'+
@@ -25,16 +24,13 @@ function startServer() {
 
     console.log('starting the server');
     exec(CMD1).
-        then((out) =>  {
-            return exec(CMD2)
-        }).
-        then((out) => {
+        then(() => {
             console.log('Now it needs to sleep for 60 seconds');
             return new Promise((resolve) => setTimeout(resolve, 60000))
 
         }).
         then(() => {
-            return exec(CMD3)
+            return exec(CMD2);
         }).
         then((out) => {
             console.log('server is up and running');
@@ -45,6 +41,7 @@ function startServer() {
                 return exec('docker start '+ config.DB_CONTAINER);
             }
             else {
+                console.log('container setup has failed. please contact developer with the following error info:');
                 console.log(err);
             }
         });
