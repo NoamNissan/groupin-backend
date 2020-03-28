@@ -11,6 +11,11 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.5",
+    "sequelize-auto-migrations": "git+https://git@github.com/scimonster/sequelize-auto-migrations.git#a063aa6535a3f580623581bf866cef2d609531ba",
+    "sequelize-cli": "^5.5.1"
   }
 }
