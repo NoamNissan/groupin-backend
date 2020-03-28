@@ -38,8 +38,6 @@ var root = app.use(
   })
 );
 
-console.log("Running a GraphQL API server at http://localhost:4000/graphql");
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
