@@ -4,9 +4,29 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
+var mysql = require('mysql');
+var dbconfig = require('./db/config.js');
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+
+// setup DB connection
+var connection = mysql.createConnection({
+    host     : dbconfig.DB_HOST,
+    port     : dbconfig.DB_PORT,
+    user     : dbconfig.DB_USER,
+    password : dbconfig.DB_PASSWORD,
+    database : dbconfig.DB_NAME,
+});
+
+connection.connect(function(err) {
+    if (err) {
+        console.error('error connecting: ' + err.stack);
+        return;
+    }
+
+    console.log('connected as id ' + connection.threadId);
+});
 
 var app = express();
 
