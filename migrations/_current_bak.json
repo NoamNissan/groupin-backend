@@ -54,6 +54,7 @@
                     "seqType": "Sequelize.ENUM('DAILY', 'WEEKLY', 'MONTHLY')"
                 },
                 "username": {
+                    "allowNull": true,
                     "references": {
                         "model": "users",
                         "key": "username"
@@ -234,5 +235,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 1
 }

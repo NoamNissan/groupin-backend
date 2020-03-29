@@ -22,7 +22,6 @@ module.exports = function(sequelize, DataTypes) {
     },
     username: {
       type: DataTypes.STRING(45),
-      allowNull: true,
       references: {
         model: 'users',
         key: 'username'
