@@ -35,3 +35,10 @@ In order to do so, simply run
 npm run makemigration <migration_name>
 ```
 you can then test your migration by running the `npm run migrate` command.
+
+## Seeding the Database
+If you wish to have some inital values in your DB's tables, run the following command just before starting the app:
+```
+npm run seed
+```
+
