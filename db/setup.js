@@ -4,8 +4,8 @@ const os = require('os');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const env = process.env.NODE_ENV || 'development';
-const config = require('./config.js')[env];
-const server_config = require('./server_config.js')[env];
+const config = require('../config/config.js')[env];
+const server_config = require('../config/server_config.js')[env];
 
 
 if(os.userInfo().uid != 0) {

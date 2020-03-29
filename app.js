@@ -6,7 +6,7 @@ var logger = require("morgan");
 var cors = require("cors");
 var mysql = require('mysql');
 const env = process.env.NODE_ENV || 'development';
-var dbconfig = require('./db/config.js')[env];
+var dbconfig = require('./config/config.js')[env];
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
