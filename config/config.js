@@ -1,16 +1,18 @@
 module.exports = {
   development: {
-    username: "groupin",
+    username: "gorupin",
     password: "Passwordm0reSeCret",
     database: "groupin",
-    host: "localhost",
+    host: "127.0.0.1",
+    port: "3306",
     dialect: "mysql",
   },
   test: {
-    username: "user1",
-    password: "password1",
-    database: "database_test",
-    host: "localhost",
+    username: "gorupin",
+    password: "Passwordm0reSeCret",
+    database: "groupin",
+    host: "127.0.0.1",
+    port: "3306",
     dialect: "mysql",
   },
   production: {
@@ -22,4 +24,3 @@ module.exports = {
     use_env_variable: "DATABASE_URL",
   },
 };
-
