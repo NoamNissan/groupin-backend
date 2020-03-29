@@ -8,6 +8,8 @@ var cors = require("cors");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
+var db = require("./models");
+
 var app = express();
 
 // view engine setup
@@ -26,15 +28,15 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
 var graphqlHTTP = require("express-graphql");
-var { mockSchema, mockResolver } = require("./schemas/mock_api_schema");
+var { schema } = require("./schemas/mock_api_schema");
 
 // The root provides a resolver function for each API endpoint
 var root = app.use(
   "/graphql",
   graphqlHTTP({
-    schema: mockSchema,
-    rootValue: mockResolver,
+    schema: schema,
     graphiql: true,
+    context: db,
   })
 );
 
