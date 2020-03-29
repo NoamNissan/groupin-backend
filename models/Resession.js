@@ -20,11 +20,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.ENUM('DAILY','WEEKLY','MONTHLY'),
       allowNull: true
     },
-    username: {
-      type: DataTypes.STRING(45),
+    user_id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
       references: {
         model: 'users',
-        key: 'username'
+        key: 'id'
       }
     }
   }, {
