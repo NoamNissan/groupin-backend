@@ -1,12 +1,26 @@
-const config = {
-    DB_HOST : '127.0.0.1',
-    DB_PORT : '3306',
-    DB_NAME : 'groupin',
-    DB_USER : 'groupin',
-    DB_PASSWORD : 'Passwordm0reSeCret',
-    DB_ROOT_PASSWORD : 'p@sswordvery$ecret',
-    DB_CONTAINER : 'groupin-mysql',
-    DB_DOCKER_IMAGE : 'mysql/mysql-server:5.7'
+module.exports = {
+    development: {
+        username: "gorupin",
+        password: "Passwordm0reSeCret",
+        database: "groupin",
+        host: "127.0.0.1",
+        port : "3306",
+        dialect: "mysql"
+    },
+    test: {
+        username: "gorupin",
+        password: "Passwordm0reSeCret",
+        database: "groupin",
+        host: "127.0.0.1",
+        port : "3306",
+        dialect: "mysql"
+    },
+    production: {
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        host: process.env.DB_HOSTNAME,
+        dialect: 'mysql',
+        use_env_variable: 'DATABASE_URL'
+    }
 };
-
-module.exports = config;

@@ -3,7 +3,9 @@ const yargs = require('yargs');
 const os = require('os');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
-const config = require('./config.js');
+const env = process.env.NODE_ENV || 'development';
+const config = require('./config.js')[env];
+const server_config = require('./server_config.js')[env];
 
 
 if(os.userInfo().uid != 0) {
@@ -11,16 +13,15 @@ if(os.userInfo().uid != 0) {
 }
 
 function startServer() {
-    const CMD1 = 'docker run --name='+ config.DB_CONTAINER +
-                 ' -p ' + config.DB_HOST +':' + config.DB_PORT +':3306/tcp' +
-                 ' -e MYSQL_ROOT_PASSWORD='+ config.DB_ROOT_PASSWORD +
-                 ' -d ' + config.DB_DOCKER_IMAGE;
+    const CMD1 = 'docker run --name='+ server_config.container_name +
+                 ' -p ' + config.host +':' + config.port +':3306/tcp' +
+                 ' -e MYSQL_ROOT_PASSWORD='+ server_config.root_password +
+                 ' -d ' + server_config.docker_image;
 
-    const CMD2 = 'docker exec '+ config.DB_CONTAINER +' /bin/bash -c "' +
-        'echo \\"CREATE DATABASE IF NOT EXISTS '+ config.DB_NAME +';'+
-        'CREATE USER '+ config.DB_USER +' IDENTIFIED BY \''+ config.DB_PASSWORD +'\';'+
-        'GRANT ALL PRIVILEGES ON *.* TO \''+ config.DB_USER +'\'@\'%\';\\"'+
-        '| mysql -u root -p'+ config.DB_ROOT_PASSWORD + '"';
+    const CMD2 = 'docker exec '+ server_config.container_name +' /bin/bash -c "' +
+        'echo \\"CREATE USER '+ config.username +' IDENTIFIED BY \''+ config.password +'\';'+
+        'GRANT ALL PRIVILEGES ON *.* TO \''+ config.username +'\'@\'%\';\\"'+
+        '| mysql -u root -p'+ server_config.root_password + '"';
 
     console.log('starting the server');
     exec(CMD1).
@@ -38,7 +39,7 @@ function startServer() {
         catch((err) => {
             if(err.stderr.includes('is already in use by container')) {
                 console.log('container is already created. starting the existing container')
-                return exec('docker start '+ config.DB_CONTAINER);
+                return exec('docker start '+ server_config.container_name);
             }
             else {
                 console.log('container setup has failed. please contact developer with the following error info:');
@@ -49,13 +50,13 @@ function startServer() {
 
 function stopServer() {
     console.log('stopping the server');
-    const CMD1 = 'docker stop '+ config.DB_CONTAINER;
+    const CMD1 = 'docker stop '+ server_config.container_name;
     return exec(CMD1);
 }
 
 function restartServer() {
     console.log('restarting the server');
-    CMD1 = 'docker start '+ config.DB_CONTAINER
+    CMD1 = 'docker start '+ server_config.container_name
     stopServer().
     then(() => {
         console.log('starting server');
@@ -66,13 +67,15 @@ function restartServer() {
 
 function deleteServer() {
     console.log('Stopping Deleting the server');
-    CMD1 = 'docker rm '+ config.DB_CONTAINER;
+    CMD1 = 'docker rm '+ server_config.container_name;
     stopServer().then(() => exec(CMD1));
 }
 
 function statusServer() {
     CMD = 'docker ps';
-    exec(CMD);
+    exec(CMD).then((out) => {
+        console.log(out.stdout);
+    });
 }
 
 yargs.command({

@@ -5,18 +5,18 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
 var mysql = require('mysql');
-var dbconfig = require('./db/config.js');
+const env = process.env.NODE_ENV || 'development';
+var dbconfig = require('./db/config.js')[env];
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
 // setup DB connection
 var connection = mysql.createConnection({
-    host     : dbconfig.DB_HOST,
-    port     : dbconfig.DB_PORT,
-    user     : dbconfig.DB_USER,
-    password : dbconfig.DB_PASSWORD,
-    database : dbconfig.DB_NAME,
+    host     : dbconfig.host,
+    port     : dbconfig.port,
+    user     : dbconfig.username,
+    password : dbconfig.password,
 });
 
 connection.connect(function(err) {
