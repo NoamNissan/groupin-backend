@@ -1,0 +1,238 @@
+{
+    "tables": {
+        "categories": {
+            "tableName": "categories",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "allowNull": false,
+                    "field": "name",
+                    "seqType": "Sequelize.STRING(100)"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "resessions": {
+            "tableName": "resessions",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER.UNSIGNED"
+                },
+                "title": {
+                    "allowNull": false,
+                    "field": "title",
+                    "seqType": "Sequelize.STRING(45)"
+                },
+                "description": {
+                    "allowNull": true,
+                    "field": "description",
+                    "seqType": "Sequelize.STRING(500)"
+                },
+                "recurrence_freq": {
+                    "allowNull": true,
+                    "field": "recurrence_freq",
+                    "seqType": "Sequelize.ENUM('DAILY', 'WEEKLY', 'MONTHLY')"
+                },
+                "username": {
+                    "references": {
+                        "model": "users",
+                        "key": "username"
+                    },
+                    "field": "username",
+                    "seqType": "Sequelize.STRING(45)"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "sessions": {
+            "tableName": "sessions",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER.UNSIGNED"
+                },
+                "username": {
+                    "allowNull": false,
+                    "references": {
+                        "model": "users",
+                        "key": "username"
+                    },
+                    "field": "username",
+                    "seqType": "Sequelize.STRING(45)"
+                },
+                "title": {
+                    "allowNull": false,
+                    "field": "title",
+                    "seqType": "Sequelize.STRING(45)"
+                },
+                "description": {
+                    "allowNull": true,
+                    "field": "description",
+                    "seqType": "Sequelize.STRING(45)"
+                },
+                "category": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "categories",
+                        "key": "id"
+                    },
+                    "field": "category",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "tags": {
+                    "allowNull": true,
+                    "field": "tags",
+                    "seqType": "Sequelize.STRING(128)"
+                },
+                "start_date": {
+                    "allowNull": false,
+                    "field": "start_date",
+                    "seqType": "Sequelize.DATEONLY"
+                },
+                "end_date": {
+                    "allowNull": false,
+                    "field": "end_date",
+                    "seqType": "Sequelize.DATEONLY"
+                },
+                "capacity": {
+                    "allowNull": true,
+                    "field": "capacity",
+                    "seqType": "Sequelize.INTEGER.UNSIGNED"
+                },
+                "attendees": {
+                    "allowNull": true,
+                    "field": "attendees",
+                    "seqType": "Sequelize.INTEGER.UNSIGNED"
+                },
+                "platform": {
+                    "allowNull": false,
+                    "field": "platform",
+                    "seqType": "Sequelize.ENUM('ZOOM', 'FACEBOOK')"
+                },
+                "platform_media_id": {
+                    "allowNull": false,
+                    "field": "platform_media_id",
+                    "seqType": "Sequelize.STRING(128)"
+                },
+                "img_source": {
+                    "allowNull": true,
+                    "field": "img_source",
+                    "seqType": "Sequelize.STRING(128)"
+                },
+                "resession_id": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "resessions",
+                        "key": "id"
+                    },
+                    "field": "resession_id",
+                    "seqType": "Sequelize.INTEGER.UNSIGNED"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "users": {
+            "tableName": "users",
+            "schema": {
+                "username": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "field": "username",
+                    "seqType": "Sequelize.STRING(45)"
+                },
+                "password_hash": {
+                    "allowNull": false,
+                    "field": "password_hash",
+                    "seqType": "Sequelize.STRING(45)"
+                },
+                "email": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "email",
+                    "seqType": "Sequelize.STRING(45)"
+                },
+                "display_name": {
+                    "allowNull": false,
+                    "field": "display_name",
+                    "seqType": "Sequelize.STRING(45)"
+                },
+                "is_admin": {
+                    "allowNull": true,
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "is_admin",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "is_premium": {
+                    "allowNull": true,
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "is_premium",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "img_source": {
+                    "allowNull": true,
+                    "field": "img_source",
+                    "seqType": "Sequelize.STRING(128)"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "revision": 2
+}
