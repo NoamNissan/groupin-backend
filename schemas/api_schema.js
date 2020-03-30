@@ -16,6 +16,15 @@ const errors = new FormatError([
 // TODO: all instances of user_token should be swapped with some real login auth token
 const USER_AUTHENTICATED = true;
 
+function check_auth(token) {
+  if (USER_AUTHENTICATED) {
+    // TODO: switch to the real user id
+    return "1";
+  }
+
+  throw new Error(errors.UNAUTHORIZED);
+}
+
 const schema = makeExecutableSchema({
   typeDefs: [
     `
@@ -83,11 +92,11 @@ type Query {
 }
 
 type Mutation {
-    createSession(user_token: ID!, title: String!, categiry: ID!): ID
-    createResession(user_token: ID!, title: String): ID
+    createSession(user_token: ID!, title: String!, category: ID!): Session
+    createResession(user_token: ID!, title: String): Session
     editSession(user_token: ID!, session_id: ID!, title: String, description: String, category: ID, tags: String, start_date: Date, end_date: Date, 
-                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String, resession_id: ID): Boolean
-    editResession(user_token: ID!, resession_id: ID!, title: String, description: String, recurrence_freq: ReccurenceFreq): Boolean
+                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String, resession_id: ID): Session
+    editResession(user_token: ID!, resession_id: ID!, title: String, description: String, recurrence_freq: ReccurenceFreq): Session
     deleteSession(user_token: ID!, session_id: ID): Boolean!
     deleteResession(user_token: ID!, resession_id: ID): Boolean!
 }
@@ -158,10 +167,34 @@ type Mutation {
       // },
     },
     Mutation: {
-      createSession: (parent, args, { db }, info) => true,
-      createResession: (parent, args, { db }, info) => true,
+      createSession: (
+        parent,
+        { user_token, title, category },
+        { db },
+        info
+      ) => {
+        const user_id = check_auth(user_token);
+        const tomorrow = new Date();
+        tomorrow.setDate(new Date().getDate() + 1);
+        return db.Session.create({
+          user_id: user_id,
+          title: title,
+          category: category,
+          start_date: tomorrow,
+          end_date: tomorrow,
+        });
+      },
+      editSession: (parent, args, { db }, info) => true,
+
+      // TODO: Implement
+      editResession: (parent, args, { db }, info) => true,
+      editResession: (parent, args, { db }, info) => true,
+
+      // TODO: Implement deletion (decide on a deleted bit vs different table)
+      // This is not important enough for the demo
       deleteSession: (parent, args, { db }, info) => true,
       deleteResession: (parent, args, { db }, info) => true,
+
       // TODO: Implement register
       // register: (parent, args, { db }, info) => {
       //   return true;
