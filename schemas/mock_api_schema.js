@@ -54,7 +54,7 @@ type Session {
 type Category {
     id: ID!
     name: String!
-    default_img: String!
+    default_img: String
 }
 
 enum ReccurenceFreq {
