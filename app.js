@@ -5,6 +5,9 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
 var mysql = require('mysql');
+var redis = require('redis');
+var session = require('express-session');
+var passport = require('passport');
 const env = process.env.NODE_ENV || 'development';
 var dbconfig = require('./config/config.js')[env];
 
@@ -39,7 +42,19 @@ app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser()); // DO NOT MODIFY THIS LINE, IT MAY SCREW UP EXPRESS-SESSION
+if(env == 'production' || env == 'test') {
+    var RedisStore = require('connect-redis')(session);
+    var redisClient = redis.createClient();
+}
+app.use(session({
+    store: (env == 'production' || env == 'test') ? new RedisStore({ client: redisClient }) : undefined,
+    secret: 'groupin-session-salt-very-very-secret',
+    saveUninitialized: false,
+    resave : false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
