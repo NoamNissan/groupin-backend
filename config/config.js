@@ -1,19 +1,27 @@
 module.exports = {
     development: {
-        username: "gorupin",
+        username: "groupin",
         password: "Passwordm0reSeCret",
-        database: "groupin",
+        database: "groupin_development",
         host: "127.0.0.1",
         port : "3306",
-        dialect: "mysql"
+        dialect: "mysql",
+        define: {
+          charset: 'utf8',
+          collate: 'utf8_general_ci', 
+        }
     },
     test: {
-        username: "gorupin",
+        username: "groupin",
         password: "Passwordm0reSeCret",
-        database: "groupin",
+        database: "groupin_test",
         host: "127.0.0.1",
         port : "3306",
-        dialect: "mysql"
+        dialect: "mysql",
+        define: {
+          charset: 'utf8',
+          collate: 'utf8_general_ci', 
+        }
     },
     production: {
         username: process.env.DB_USERNAME,
@@ -21,6 +29,10 @@ module.exports = {
         database: process.env.DB_NAME,
         host: process.env.DB_HOSTNAME,
         dialect: 'mysql',
-        use_env_variable: 'DATABASE_URL'
-    }
+        use_env_variable: 'DATABASE_URL',
+        define: {
+          charset: 'utf8',
+          collate: 'utf8_general_ci', 
+        }
+    },
 };
