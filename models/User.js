@@ -2,20 +2,14 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('User', {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    provider: {
-      type: DataTypes.ENUM('FACEBOOK'),
-      allowNull: false
-    },
-    provider_user_id: {
+    username: {
       type: DataTypes.STRING(45),
       allowNull: false,
-      unique: true
+      primaryKey: true
+    },
+    password_hash: {
+      type: DataTypes.STRING(45),
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING(45),
