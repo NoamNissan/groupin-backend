@@ -7,8 +7,7 @@
     "dev": "nodemon ./bin/www",
     "createdb": "node_modules/.bin/sequelize db:create",
     "migrate": "node_modules/.bin/sequelize db:migrate",
-    "makemigration": "node node_modules/sequelize-auto-migrations/bin/makemigration.js --name",
-    "seed": "node_modules/.bin/sequelize db:seed:all"
+    "makemigration": "node node_modules/sequelize-auto-migrations/bin/makemigration.js --name"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

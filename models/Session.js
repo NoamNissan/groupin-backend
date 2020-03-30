@@ -8,12 +8,12 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true,
       primaryKey: true
     },
-    user_id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+    username: {
+      type: DataTypes.STRING(45),
       allowNull: false,
       references: {
         model: 'users',
-        key: 'id'
+        key: 'username'
       }
     },
     title: {
@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     description: {
-      type: DataTypes.STRING(2000),
+      type: DataTypes.STRING(45),
       allowNull: true
     },
     category: {
@@ -53,12 +53,12 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     platform: {
-      type: DataTypes.ENUM('ZOOM'),
-      allowNull: true
+      type: DataTypes.ENUM('ZOOM','FACEBOOK'),
+      allowNull: false
     },
     platform_media_id: {
       type: DataTypes.STRING(128),
-      allowNull: true
+      allowNull: false
     },
     img_source: {
       type: DataTypes.STRING(128),

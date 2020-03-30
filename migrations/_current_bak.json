@@ -15,11 +15,6 @@
                     "field": "name",
                     "seqType": "Sequelize.STRING(100)"
                 },
-                "default_image": {
-                    "allowNull": true,
-                    "field": "default_image",
-                    "seqType": "Sequelize.BLOB"
-                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -31,7 +26,6 @@
                     "seqType": "Sequelize.DATE"
                 }
             },
-            "charset": "utf8",
             "indexes": []
         },
         "resessions": {
@@ -59,14 +53,14 @@
                     "field": "recurrence_freq",
                     "seqType": "Sequelize.ENUM('DAILY', 'WEEKLY', 'MONTHLY')"
                 },
-                "user_id": {
-                    "allowNull": false,
+                "username": {
+                    "allowNull": true,
                     "references": {
                         "model": "users",
-                        "key": "id"
+                        "key": "username"
                     },
-                    "field": "user_id",
-                    "seqType": "Sequelize.INTEGER.UNSIGNED"
+                    "field": "username",
+                    "seqType": "Sequelize.STRING(45)"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -79,7 +73,6 @@
                     "seqType": "Sequelize.DATE"
                 }
             },
-            "charset": "utf8",
             "indexes": []
         },
         "sessions": {
@@ -92,14 +85,14 @@
                     "field": "id",
                     "seqType": "Sequelize.INTEGER.UNSIGNED"
                 },
-                "user_id": {
+                "username": {
                     "allowNull": false,
                     "references": {
                         "model": "users",
-                        "key": "id"
+                        "key": "username"
                     },
-                    "field": "user_id",
-                    "seqType": "Sequelize.INTEGER.UNSIGNED"
+                    "field": "username",
+                    "seqType": "Sequelize.STRING(45)"
                 },
                 "title": {
                     "allowNull": false,
@@ -146,12 +139,12 @@
                     "seqType": "Sequelize.INTEGER.UNSIGNED"
                 },
                 "platform": {
-                    "allowNull": true,
+                    "allowNull": false,
                     "field": "platform",
-                    "seqType": "Sequelize.ENUM('ZOOM')"
+                    "seqType": "Sequelize.ENUM('ZOOM', 'FACEBOOK')"
                 },
                 "platform_media_id": {
-                    "allowNull": true,
+                    "allowNull": false,
                     "field": "platform_media_id",
                     "seqType": "Sequelize.STRING(128)"
                 },
@@ -180,28 +173,20 @@
                     "seqType": "Sequelize.DATE"
                 }
             },
-            "charset": "utf8",
             "indexes": []
         },
         "users": {
             "tableName": "users",
             "schema": {
-                "id": {
+                "username": {
                     "allowNull": false,
-                    "autoIncrement": true,
                     "primaryKey": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER.UNSIGNED"
+                    "field": "username",
+                    "seqType": "Sequelize.STRING(45)"
                 },
-                "provider": {
+                "password_hash": {
                     "allowNull": false,
-                    "field": "provider",
-                    "seqType": "Sequelize.ENUM('FACEBOOK')"
-                },
-                "provider_user_id": {
-                    "allowNull": false,
-                    "unique": true,
-                    "field": "provider_user_id",
+                    "field": "password_hash",
                     "seqType": "Sequelize.STRING(45)"
                 },
                 "email": {
@@ -247,9 +232,8 @@
                     "seqType": "Sequelize.DATE"
                 }
             },
-            "charset": "utf8",
             "indexes": []
         }
     },
-    "revision": 5
+    "revision": 1
 }
