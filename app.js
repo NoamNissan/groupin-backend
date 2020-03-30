@@ -56,7 +56,7 @@ var root = app.use(
   graphqlHTTP({
     schema: schema,
     graphiql: true,
-    context: db,
+    context: { db: db },
   })
 );
 
