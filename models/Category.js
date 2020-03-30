@@ -11,6 +11,10 @@ module.exports = function(sequelize, DataTypes) {
     name: {
       type: DataTypes.STRING(100),
       allowNull: false
+    },
+    default_image: {
+      type: DataTypes.BLOB,
+      allowNull: true
     }
   }, {
     tableName: 'categories'
