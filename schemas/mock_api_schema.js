@@ -76,9 +76,9 @@ type Query {
     user(id: ID): User
     getFrontSessions(start: Int!, count: Int!): [Session!]!
     getCategories: [Category!]!
-    getSessionsByCategory(category: String!, start: Int!, count: Int!): [Session!]
+    getSessionsByCategory(category: ID!, start: Int!, count: Int!): [Session!]
     getSessionsByUser(username: String!, start: Int!, count: Int!): [Session!]
-    getResessionsByCategory(category: Category!, start: Int!, count: Int!): [Resession!]
+    getResessionsByCategory(category: ID!, start: Int!, count: Int!): [Resession!]
     getResessionsByUser(username: String!, start: Int!, count: Int!): [Resession!]
 }
 
@@ -163,8 +163,6 @@ type Mutation {
       // },
     },
     Mutation: {
-      subscribe: (parent, args, { db }, info) => true,
-      unsubscribe: (parent, args, { db }, info) => true,
       createSession: (parent, args, { db }, info) => true,
       createResession: (parent, args, { db }, info) => true,
       deleteSession: (parent, args, { db }, info) => true,
