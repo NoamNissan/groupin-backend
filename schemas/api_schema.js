@@ -73,13 +73,13 @@ type Resession {
 
 type Query {
     hello: String
-    user(id: ID): User
-    getFrontSessions(start: Int!, count: Int!): [Session!]!
-    getCategories: [Category!]!
-    getSessionsByCategory(category: ID!, start: Int!, count: Int!): [Session!]
-    getSessionsByUser(username: String!, start: Int!, count: Int!): [Session!]
-    getResessionsByCategory(category: ID!, start: Int!, count: Int!): [Resession!]
-    getResessionsByUser(username: String!, start: Int!, count: Int!): [Resession!]
+    User(id: ID): User
+    FrontSessions(start: Int!, count: Int!): [Session!]!
+    Categories: [Category!]!
+    SessionsByCategory(category: ID!, start: Int!, count: Int!): [Session!]
+    SessionsByUser(username: String!, start: Int!, count: Int!): [Session!]
+    ResessionsByCategory(category: ID!, start: Int!, count: Int!): [Resession!]
+    ResessionsByUser(username: String!, start: Int!, count: Int!): [Resession!]
 }
 
 type Mutation {
@@ -98,19 +98,19 @@ type Mutation {
       // Hello is left for sanity, TODO remove when saner
       hello: () => "Hello world!",
       // A Stub, currently, fix when implementing login / register
-      user: () => ({
+      User: () => ({
         id: "5",
         name: "Johnny Test",
         email: "billgates@google.com",
       }),
-      getCategories: (parent, args, { db }, info) => db.Category.findAll(),
-      getFrontSessions: (parent, { start, count }, { db }, info) => {
+      Categories: (parent, args, { db }, info) => db.Category.findAll(),
+      FrontSessions: (parent, { start, count }, { db }, info) => {
         if (count > MAX_SESSIONS_COUNT) {
           throw new Error(errors.COUNT_TOO_HIGH);
         }
         return db.Session.findAll({ offset: start, limit: count });
       },
-      getSessionsByUser: (parent, { username, start, count }, { db }, info) => {
+      SessionsByUser: (parent, { username, start, count }, { db }, info) => {
         if (count > MAX_SESSIONS_COUNT) {
           throw new Error(errors.COUNT_TOO_HIGH);
         }
@@ -118,7 +118,7 @@ type Mutation {
           where: { username: { [Op.eq]: username } },
         });
       },
-      getSessionsByCategory: (
+      SessionsByCategory: (
         parent,
         { category, start, count },
         { db },
@@ -131,12 +131,7 @@ type Mutation {
           where: { category: { [Op.eq]: category } },
         });
       },
-      getResessionsByUser: (
-        parent,
-        { username, start, count },
-        { db },
-        info
-      ) => {
+      ResessionsByUser: (parent, { username, start, count }, { db }, info) => {
         if (count > MAX_SESSIONS_COUNT) {
           throw new Error(errors.COUNT_TOO_HIGH);
         }
@@ -144,7 +139,7 @@ type Mutation {
           where: { username: { [Op.eq]: username } },
         });
       },
-      getResessionsByCategory: (
+      ResessionsByCategory: (
         parent,
         { category, start, count },
         { db },
