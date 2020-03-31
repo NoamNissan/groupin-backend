@@ -51,7 +51,7 @@ enum Platform {
 
 type Session {
     id: ID!
-    username: String!
+    user_id: ID!
     title: String!
     description: String
     category: ID!
@@ -83,7 +83,7 @@ type Resession {
     title: String!
     description: String
     recurrence_freq: ReccurenceFreq
-    username: String!
+    user_id: ID!
 }
 
 type Query {
@@ -93,9 +93,9 @@ type Query {
     FrontSessions(start: Int!, count: Int!): [Session!]!
     Categories: [Category!]!
     SessionsByCategory(category: ID!, start: Int!, count: Int!): [Session!]
-    SessionsByUser(username: String!, start: Int!, count: Int!): [Session!]
+    SessionsByUser(user_id: ID!, start: Int!, count: Int!): [Session!]
     ResessionsByCategory(category: ID!, start: Int!, count: Int!): [Resession!]
-    ResessionsByUser(username: String!, start: Int!, count: Int!): [Resession!]
+    ResessionsByUser(user_id: ID!, start: Int!, count: Int!): [Resession!]
 }
 
 type Mutation {
@@ -120,17 +120,13 @@ type Mutation {
                 }
                 return db.Session.findAll({ offset: start, limit: count })
             },
-            SessionsByUser: (
-                parent,
-                { username, start, count },
-                { db },
-                info
-            ) => {
+            SessionsByUser: (parent, { id, start, count }, { db }, info) => {
                 if (count > MAX_SESSIONS_COUNT) {
                     throw new Error(errors.COUNT_TOO_HIGH)
                 }
                 return db.Session.findAll({
-                    where: { username: { [Op.eq]: username } },
+                    where: { user_id: id },
+                    limit: count,
                 })
             },
             SessionsByCategory: (
@@ -143,12 +139,13 @@ type Mutation {
                     throw new Error(errors.COUNT_TOO_HIGH)
                 }
                 return db.Session.findAll({
-                    where: { category: { [Op.eq]: category } },
+                    where: { category: category },
+                    limit: count,
                 })
             },
             ResessionsByUser: (
                 parent,
-                { username, start, count },
+                { user_id, start, count },
                 { db },
                 info
             ) => {
@@ -156,7 +153,8 @@ type Mutation {
                     throw new Error(errors.COUNT_TOO_HIGH)
                 }
                 return db.Resession.findAll({
-                    where: { username: { [Op.eq]: username } },
+                    where: { user_id: user_id },
+                    limit: count,
                 })
             },
             ResessionsByCategory: (
@@ -169,7 +167,8 @@ type Mutation {
                     throw new Error(errors.COUNT_TOO_HIGH)
                 }
                 return db.Resession.findAll({
-                    where: { category: { [Op.eq]: category } },
+                    where: { category: category },
+                    limit: count,
                 })
             },
             // TODO: Implement login
