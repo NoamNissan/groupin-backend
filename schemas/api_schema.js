@@ -1,16 +1,5 @@
 var { makeExecutableSchema } = require('graphql-tools');
-var FormatError = require('easygraphql-format-error');
-
-// Don't return more than MAX_SESSIONS_COUNT sessions in a single request!
-const MAX_SESSIONS_COUNT = 50;
-
-const errors = new FormatError([
-    {
-        name: 'COUNT_TOO_HIGH',
-        message: 'The passed count value is too high',
-        statusCode: 400
-    }
-]).errorName;
+var errors = require('./api_schema_errors');
 
 function strip_null(obj) {
     Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
@@ -28,6 +17,15 @@ function check_auth(token) {
     }
 
     throw new Error(errors.UNAUTHORIZED);
+}
+
+// Don't return more than MAX_SESSIONS_COUNT sessions in a single request!
+const MAX_SESSIONS_COUNT = 50;
+
+function check_sessions_count(count) {
+    if (count > MAX_SESSIONS_COUNT) {
+        throw new Error(errors.COUNT_TOO_HIGH);
+    }
 }
 
 // IDK if User needs to export more stuff, fit it to your needs (OAuth)
@@ -115,15 +113,11 @@ type Mutation {
             Session: (parnet, { id }, { db }, info) => db.Session.findByPk(id),
             Categories: (parent, args, { db }, info) => db.Category.findAll(),
             FrontSessions: (parent, { start, count }, { db }, info) => {
-                if (count > MAX_SESSIONS_COUNT) {
-                    throw new Error(errors.COUNT_TOO_HIGH);
-                }
+                check_sessions_count(count);
                 return db.Session.findAll({ offset: start, limit: count });
             },
             SessionsByUser: (parent, { id, start, count }, { db }, info) => {
-                if (count > MAX_SESSIONS_COUNT) {
-                    throw new Error(errors.COUNT_TOO_HIGH);
-                }
+                check_sessions_count(count);
                 return db.Session.findAll({
                     where: { user_id: id },
                     limit: count
@@ -135,9 +129,7 @@ type Mutation {
                 { db },
                 info
             ) => {
-                if (count > MAX_SESSIONS_COUNT) {
-                    throw new Error(errors.COUNT_TOO_HIGH);
-                }
+                check_sessions_count(count);
                 return db.Session.findAll({
                     where: { category: category },
                     limit: count
@@ -149,9 +141,7 @@ type Mutation {
                 { db },
                 info
             ) => {
-                if (count > MAX_SESSIONS_COUNT) {
-                    throw new Error(errors.COUNT_TOO_HIGH);
-                }
+                check_sessions_count(count);
                 return db.Resession.findAll({
                     where: { user_id: user_id },
                     limit: count
@@ -163,9 +153,7 @@ type Mutation {
                 { db },
                 info
             ) => {
-                if (count > MAX_SESSIONS_COUNT) {
-                    throw new Error(errors.COUNT_TOO_HIGH);
-                }
+                check_sessions_count(count);
                 return db.Resession.findAll({
                     where: { category: category },
                     limit: count
