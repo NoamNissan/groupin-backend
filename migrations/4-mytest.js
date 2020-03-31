@@ -10,61 +10,63 @@ var Sequelize = require('sequelize');
  **/
 
 var info = {
-    "revision": 4,
-    "name": "mytest",
-    "created": "2020-03-29T21:21:11.396Z",
-    "comment": ""
+    revision: 4,
+    name: 'mytest',
+    created: '2020-03-29T21:21:11.396Z',
+    comment: ''
 };
 
-var migrationCommands = function(transaction) {
-    return [{
-        fn: "addColumn",
-        params: [
-            "categories",
-            "default_image",
-            {
-                "type": Sequelize.BLOB,
-                "field": "default_image",
-                "allowNull": true
-            },
-            {
-                transaction: transaction
-            }
-        ]
-    }];
+var migrationCommands = function (transaction) {
+    return [
+        {
+            fn: 'addColumn',
+            params: [
+                'categories',
+                'default_image',
+                {
+                    type: Sequelize.BLOB,
+                    field: 'default_image',
+                    allowNull: true
+                },
+                {
+                    transaction: transaction
+                }
+            ]
+        }
+    ];
 };
-var rollbackCommands = function(transaction) {
-    return [{
-        fn: "removeColumn",
-        params: [
-            "categories",
-            "default_image",
-            {
-                transaction: transaction
-            }
-        ]
-    }];
+var rollbackCommands = function (transaction) {
+    return [
+        {
+            fn: 'removeColumn',
+            params: [
+                'categories',
+                'default_image',
+                {
+                    transaction: transaction
+                }
+            ]
+        }
+    ];
 };
 
 module.exports = {
     pos: 0,
     useTransaction: true,
-    execute: function(queryInterface, Sequelize, _commands)
-    {
+    execute: function (queryInterface, Sequelize, _commands) {
         var index = this.pos;
         function run(transaction) {
             const commands = _commands(transaction);
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 function next() {
-                    if (index < commands.length)
-                    {
+                    if (index < commands.length) {
                         let command = commands[index];
-                        console.log("[#"+index+"] execute: " + command.fn);
+                        console.log('[#' + index + '] execute: ' + command.fn);
                         index++;
-                        queryInterface[command.fn].apply(queryInterface, command.params).then(next, reject);
-                    }
-                    else
-                        resolve();
+                        queryInterface[command.fn]
+                            .apply(queryInterface, command.params)
+                            .then(next, reject);
+                    } else resolve();
                 }
                 next();
             });
@@ -75,12 +77,10 @@ module.exports = {
             return run(null);
         }
     },
-    up: function(queryInterface, Sequelize)
-    {
+    up: function (queryInterface, Sequelize) {
         return this.execute(queryInterface, Sequelize, migrationCommands);
     },
-    down: function(queryInterface, Sequelize)
-    {
+    down: function (queryInterface, Sequelize) {
         return this.execute(queryInterface, Sequelize, rollbackCommands);
     },
     info: info

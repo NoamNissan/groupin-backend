@@ -8,75 +8,75 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.INTEGER.UNSIGNED,
                 allowNull: false,
                 autoIncrement: true,
-                primaryKey: true,
+                primaryKey: true
             },
             user_id: {
                 type: DataTypes.INTEGER.UNSIGNED,
                 allowNull: false,
                 references: {
                     model: 'users',
-                    key: 'id',
-                },
+                    key: 'id'
+                }
             },
             title: {
                 type: DataTypes.STRING(45),
-                allowNull: false,
+                allowNull: false
             },
             description: {
                 type: DataTypes.STRING(2000),
-                allowNull: true,
+                allowNull: true
             },
             category: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
                 references: {
                     model: 'categories',
-                    key: 'id',
-                },
+                    key: 'id'
+                }
             },
             tags: {
                 type: DataTypes.STRING(128),
-                allowNull: true,
+                allowNull: true
             },
             start_date: {
                 type: DataTypes.DATE,
-                allowNull: false,
+                allowNull: false
             },
             end_date: {
                 type: DataTypes.DATE,
-                allowNull: false,
+                allowNull: false
             },
             capacity: {
                 type: DataTypes.INTEGER.UNSIGNED,
-                allowNull: true,
+                allowNull: true
             },
             attendees: {
                 type: DataTypes.INTEGER.UNSIGNED,
-                allowNull: true,
+                allowNull: true
             },
             platform: {
                 type: DataTypes.ENUM('ZOOM'),
-                allowNull: true,
+                allowNull: true
             },
             platform_media_id: {
                 type: DataTypes.STRING(128),
-                allowNull: true,
+                allowNull: true
             },
             img_source: {
                 type: DataTypes.STRING(128),
-                allowNull: true,
+                allowNull: true
             },
             resession_id: {
                 type: DataTypes.INTEGER.UNSIGNED,
                 allowNull: true,
                 references: {
                     model: 'resessions',
-                    key: 'id',
-                },
-            },
+                    key: 'id'
+                }
+            }
         },
         {
-            tableName: 'sessions',
+            tableName: 'sessions'
         }
-    )
-}
+    );
+};
