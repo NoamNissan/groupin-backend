@@ -12,6 +12,11 @@ const errors = new FormatError([
   },
 ]).errorName;
 
+function strip_null(obj) {
+  Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
+  return obj;
+}
+
 // TODO: remove when login is implemented
 // TODO: all instances of user_token should be swapped with some real login auth token
 const USER_AUTHENTICATED = true;
@@ -82,7 +87,8 @@ type Resession {
 
 type Query {
     hello: String
-    User(id: ID): User
+    User(id: ID!): User
+    Session(id: ID!): Session
     FrontSessions(start: Int!, count: Int!): [Session!]!
     Categories: [Category!]!
     SessionsByCategory(category: ID!, start: Int!, count: Int!): [Session!]
@@ -94,7 +100,7 @@ type Query {
 type Mutation {
     createSession(user_token: ID!, title: String!, category: ID!): Session
     editSession(user_token: ID!, session_id: ID!, title: String, description: String, category: ID, tags: String, start_date: Date, end_date: Date, 
-                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String, resession_id: ID): Session
+                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String): Boolean!
     deleteSession(user_token: ID!, session_id: ID): Boolean!
 }
 `,
@@ -109,6 +115,7 @@ type Mutation {
         name: "Johnny Test",
         email: "billgates@google.com",
       }),
+      Session: (parnet, { id }, { db }, info) => db.Session.findByPk(id),
       Categories: (parent, args, { db }, info) => db.Category.findAll(),
       FrontSessions: (parent, { start, count }, { db }, info) => {
         if (count > MAX_SESSIONS_COUNT) {
@@ -181,7 +188,51 @@ type Mutation {
           end_date: tomorrow,
         });
       },
-      editSession: (parent, args, { db }, info) => true,
+      editSession: async (
+        parent,
+        {
+          user_token,
+          session_id,
+          title,
+          description,
+          category,
+          tags,
+          start_date,
+          end_date,
+          capacity,
+          attendees,
+          platform,
+          platform_media_id,
+          img_source,
+        },
+        { db },
+        info
+      ) => {
+        // TODO: sanitize the date (end > start)
+        const user_id = check_auth(user_token);
+        const affected_rows = (
+          await db.Session.update(
+            strip_null({
+              title: title,
+              description: description,
+              category: category,
+              tags: tags,
+              start_date: start_date,
+              end_date: end_date,
+              capacity: capacity,
+              attendees: attendees,
+              platform: platform,
+              platform_media_id: platform_media_id,
+              img_source: img_source,
+            }),
+            {
+              where: { id: session_id, user_id: user_id },
+            }
+          )
+        )[0];
+
+        return affected_rows === 1;
+      },
 
       // TODO: Implement resession
       // No planned front end support for now
