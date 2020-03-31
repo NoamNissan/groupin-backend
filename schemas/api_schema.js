@@ -276,4 +276,4 @@ type Mutation {
     },
 })
 
-module.exports = { schema }
+module.exports = schema

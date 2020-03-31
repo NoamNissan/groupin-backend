@@ -48,7 +48,7 @@ app.use('/', indexRouter)
 app.use('/users', usersRouter)
 
 var graphqlHTTP = require('express-graphql')
-var { schema } = require('./schemas/api_schema')
+var schema = require('./schemas/api_schema')
 
 // The root provides a resolver function for each API endpoint
 var root = app.use(
