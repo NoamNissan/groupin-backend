@@ -45,7 +45,6 @@ type User {
 
 enum Platform {
     ZOOM
-    FACEBOO
 }
 
 type Session {
