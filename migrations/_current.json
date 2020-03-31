@@ -77,17 +77,6 @@
                     "allowNull": false,
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
-                },
-                "UserId": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "users",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "UserId",
-                    "seqType": "Sequelize.INTEGER.UNSIGNED"
                 }
             },
             "charset": "utf8mb4",
@@ -189,17 +178,6 @@
                     "allowNull": false,
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
-                },
-                "UserId": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "users",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "UserId",
-                    "seqType": "Sequelize.INTEGER.UNSIGNED"
                 }
             },
             "charset": "utf8mb4",
@@ -273,5 +251,5 @@
             "indexes": []
         }
     },
-    "revision": 8
+    "revision": 7
 }

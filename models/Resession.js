@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-    const Resession = sequelize.define(
+    return sequelize.define(
         'Resession',
         {
             id: {
@@ -35,10 +35,4 @@ module.exports = function (sequelize, DataTypes) {
             tableName: 'resessions'
         }
     );
-
-    Resession.associate = (models) => {
-        Resession.belongsTo(models.User);
-    };
-
-    return Resession;
 };

@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-    const Session = sequelize.define(
+    return sequelize.define(
         'Session',
         {
             id: {
@@ -79,10 +79,4 @@ module.exports = function (sequelize, DataTypes) {
             tableName: 'sessions'
         }
     );
-
-    Session.associate = (models) => {
-        Session.belongsTo(models.User);
-    };
-
-    return Session;
 };
