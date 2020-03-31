@@ -30,17 +30,19 @@ function check_auth(token) {
     throw new Error(errors.UNAUTHORIZED)
 }
 
+// IDK if User needs to export more stuff, fit it to your needs (OAuth)
 const schema = makeExecutableSchema({
     typeDefs: [
         `
 scalar Date
 
 type User {
-    username: String!
-    email: String
-    display_name: String
+    id: ID!
+    email: String!
+    display_name: String!
     is_admin: String
     is_premium: String
+    img_source: String
 }
 
 enum Platform {
@@ -109,11 +111,7 @@ type Mutation {
             // Hello is left for sanity, TODO remove when saner
             hello: () => 'Hello world!',
             // A Stub, currently, fix when implementing login / register
-            User: () => ({
-                id: '5',
-                name: 'Johnny Test',
-                email: 'billgates@google.com',
-            }),
+            User: (parent, { id }, { db }, info) => db.User.findByPk(id),
             Session: (parnet, { id }, { db }, info) => db.Session.findByPk(id),
             Categories: (parent, args, { db }, info) => db.Category.findAll(),
             FrontSessions: (parent, { start, count }, { db }, info) => {
