@@ -234,7 +234,7 @@
                 "img_source": {
                     "allowNull": true,
                     "field": "img_source",
-                    "seqType": "Sequelize.STRING(128)"
+                    "seqType": "Sequelize.STRING(256)"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -251,5 +251,5 @@
             "indexes": []
         }
     },
-    "revision": 7
+    "revision": 8
 }
