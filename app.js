@@ -65,19 +65,21 @@ var root = app.use(
             // We'd like to translate the error we've gotten to the FormatError
             // if it exists and then report it, if such object does not exist,
             // don't propagate the error to the client (do LOG it!)
-            const error_secondary = errors.getError(error);
+            const secondary_error = errors.errorType[error.message];
 
             // An unexepcted error was raised, that's bad!
-            if (error === error_secondary) {
+            if (!secondary_error) {
                 // TODO: log the bug here
 
                 // I'm fine with returning the real error if we're not in prod
                 if (is_prod) {
                     return errors.errorType['INTERNAL_SERVER_ERROR'];
+                } else {
+                    return error;
                 }
             }
 
-            return error;
+            return secondary_error;
         }
     })
 );
