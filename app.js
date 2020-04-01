@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-var mysql = require('mysql');
 var redis = require('redis');
 var session = require('express-session');
 var passport = require('passport');
@@ -15,23 +14,6 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var db = require('./models');
-
-// setup DB connection
-var connection = mysql.createConnection({
-    host: dbconfig.host,
-    port: dbconfig.port,
-    user: dbconfig.username,
-    password: dbconfig.password
-});
-
-connection.connect(function (err) {
-    if (err) {
-        console.error('error connecting: ' + err.stack);
-        return;
-    }
-
-    console.log('connected as id ' + connection.threadId);
-});
 
 var app = express();
 
