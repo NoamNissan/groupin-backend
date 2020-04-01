@@ -31,7 +31,7 @@
                     "seqType": "Sequelize.DATE"
                 }
             },
-            "charset": "utf8mb4",
+            "charset": "utf8",
             "indexes": []
         },
         "resessions": {
@@ -79,7 +79,7 @@
                     "seqType": "Sequelize.DATE"
                 }
             },
-            "charset": "utf8mb4",
+            "charset": "utf8",
             "indexes": []
         },
         "sessions": {
@@ -180,7 +180,7 @@
                     "seqType": "Sequelize.DATE"
                 }
             },
-            "charset": "utf8mb4",
+            "charset": "utf8",
             "indexes": []
         },
         "users": {
@@ -234,7 +234,7 @@
                 "img_source": {
                     "allowNull": true,
                     "field": "img_source",
-                    "seqType": "Sequelize.STRING(256)"
+                    "seqType": "Sequelize.STRING(128)"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -247,9 +247,9 @@
                     "seqType": "Sequelize.DATE"
                 }
             },
-            "charset": "utf8mb4",
+            "charset": "utf8",
             "indexes": []
         }
     },
-    "revision": 7
+    "revision": 6
 }
