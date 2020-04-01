@@ -1,5 +1,5 @@
 var { makeExecutableSchema } = require('graphql-tools');
-var errors = require('./api_schema_errors');
+var errors = require('./api_schema_errors').errorName;
 
 function strip_null(obj) {
     Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);

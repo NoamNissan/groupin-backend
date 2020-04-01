@@ -6,6 +6,6 @@ const errors = new FormatError([
         message: 'The passed count value is too high',
         statusCode: 400
     }
-]).errorName;
+]);
 
 module.exports = errors;
