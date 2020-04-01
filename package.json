@@ -29,7 +29,11 @@
         "sequelize-auto-migrations": "git+https://git@github.com/scimonster/sequelize-auto-migrations.git#a063aa6535a3f580623581bf866cef2d609531ba",
         "sequelize-cli": "^5.5.1",
         "util": "^0.12.2",
-        "yargs": "^15.3.1"
+        "yargs": "^15.3.1",
+        "acorn": ">=5.7.4",
+        "constantinople": ">=3.1.1",
+        "clean-css": ">=4.1.11",
+        "kind-of": ">=6.0.3"
     },
     "devDependencies": {
         "nodemon": "^2.0.2",
