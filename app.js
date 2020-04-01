@@ -8,7 +8,7 @@ var redis = require('redis');
 var session = require('express-session');
 var passport = require('passport');
 const env = process.env.NODE_ENV || 'development';
-var dbconfig = require('./config/config.js')[env];
+var server_config = require('./config/server_config.js')[env];
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -31,17 +31,25 @@ if (env == 'production' || env == 'test') {
     var RedisStore = require('connect-redis')(session);
     var redisClient = redis.createClient();
 }
-app.use(
-    session({
-        store:
-            env == 'production' || env == 'test'
-                ? new RedisStore({ client: redisClient })
-                : undefined,
-        secret: 'groupin-session-salt-very-very-secret',
-        saveUninitialized: false,
-        resave: false
-    })
-);
+
+var sess = {
+    store:
+        env == 'production' || env == 'test'
+            ? new RedisStore({ client: redisClient })
+            : undefined,
+    secret: server_config.session_secret,
+    saveUninitialized: false,
+    resave: false,
+    cookie : {}
+};
+
+if(env == 'production' || env == 'test') {
+    app.set('trust proxy', 1);
+    sess.cookie.secure = true;
+}
+
+app.use(session(sess));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));

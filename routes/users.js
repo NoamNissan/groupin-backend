@@ -12,7 +12,6 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email']}));
-router.get('/auth/facebook/check', (req,res) => {res.send('everything is fine')});
 
 router.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
@@ -22,13 +21,16 @@ router.get('/auth/facebook/callback',
 
 router.get('/auth/facebook/fail', (req,res) => {
   // Failed login landing page
-  res.send("Something went wrong...");
+  res.status(400).send('Something went wrong...');
 });
 
 router.get('/auth/facebook/success', (req,res) => {
   // Successfull login landing page
-  // res.redirect('/');
     res.redirect('../../demo');
+
+    // TODO
+    // To integrate with FE we want to change to answer to something like this
+    // res.status(200).send('ok');
 });
 
 router.get('/logout', (req, res) => {

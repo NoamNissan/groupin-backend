@@ -31,16 +31,10 @@ passport.use(
             profileFields: ["name", "displayName", "email", "picture"]
         },
         function(accessToken, refreshToken, profile, done) {
-            console.log('A successfull login as occured. (is that a new user?)');
-            console.log(profile);
-            console.log(profile._json.picture.data.url);
-            console.log(profile._json.picture.data.url.length);
-
             const { email, name, picture, id } = profile._json;
 
             db.User.findOne({where : {email}}).then((user) => {
                 if(user) {
-                    console.log('User already exists. successful connection')
                     return done(null, user);
                 }
                 else {
@@ -56,8 +50,6 @@ passport.use(
                             return done(null, false, {message: 'user creation failed'});
                         }
                         else {
-                            console.log('new user is created!');
-                            console.log(newUser);
                             return done(null, newUser);
                         }
                     })
