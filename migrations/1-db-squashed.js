@@ -14,8 +14,8 @@ var Sequelize = require('sequelize');
 
 var info = {
     "revision": 1,
-    "name": "db_migration",
-    "created": "2020-03-28T21:35:47.903Z",
+    "name": "db-squashed",
+    "created": "2020-04-01T18:51:35.582Z",
     "comment": ""
 };
 
@@ -37,6 +37,11 @@ var migrationCommands = function(transaction) {
                         "field": "name",
                         "allowNull": false
                     },
+                    "default_image": {
+                        "type": Sequelize.BLOB,
+                        "field": "default_image",
+                        "allowNull": true
+                    },
                     "createdAt": {
                         "type": Sequelize.DATE,
                         "field": "createdAt",
@@ -49,6 +54,7 @@ var migrationCommands = function(transaction) {
                     }
                 },
                 {
+                    "charset": "utf8mb4",
                     "transaction": transaction
                 }
             ]
@@ -58,15 +64,22 @@ var migrationCommands = function(transaction) {
             params: [
                 "users",
                 {
-                    "username": {
-                        "type": Sequelize.STRING(45),
-                        "field": "username",
+                    "id": {
+                        "type": Sequelize.INTEGER.UNSIGNED,
+                        "field": "id",
                         "primaryKey": true,
+                        "autoIncrement": true,
                         "allowNull": false
                     },
-                    "password_hash": {
+                    "provider": {
+                        "type": Sequelize.ENUM('FACEBOOK'),
+                        "field": "provider",
+                        "allowNull": false
+                    },
+                    "provider_user_id": {
                         "type": Sequelize.STRING(45),
-                        "field": "password_hash",
+                        "field": "provider_user_id",
+                        "unique": true,
                         "allowNull": false
                     },
                     "email": {
@@ -93,7 +106,7 @@ var migrationCommands = function(transaction) {
                         "allowNull": true
                     },
                     "img_source": {
-                        "type": Sequelize.STRING(128),
+                        "type": Sequelize.STRING(256),
                         "field": "img_source",
                         "allowNull": true
                     },
@@ -109,6 +122,7 @@ var migrationCommands = function(transaction) {
                     }
                 },
                 {
+                    "charset": "utf8mb4",
                     "transaction": transaction
                 }
             ]
@@ -140,14 +154,14 @@ var migrationCommands = function(transaction) {
                         "field": "recurrence_freq",
                         "allowNull": true
                     },
-                    "username": {
-                        "type": Sequelize.STRING(45),
-                        "field": "username",
+                    "user_id": {
+                        "type": Sequelize.INTEGER.UNSIGNED,
+                        "field": "user_id",
                         "references": {
                             "model": "users",
-                            "key": "username"
+                            "key": "id"
                         },
-                        "allowNull": true
+                        "allowNull": false
                     },
                     "createdAt": {
                         "type": Sequelize.DATE,
@@ -161,6 +175,7 @@ var migrationCommands = function(transaction) {
                     }
                 },
                 {
+                    "charset": "utf8mb4",
                     "transaction": transaction
                 }
             ]
@@ -177,12 +192,12 @@ var migrationCommands = function(transaction) {
                         "autoIncrement": true,
                         "allowNull": false
                     },
-                    "username": {
-                        "type": Sequelize.STRING(45),
-                        "field": "username",
+                    "user_id": {
+                        "type": Sequelize.INTEGER.UNSIGNED,
+                        "field": "user_id",
                         "references": {
                             "model": "users",
-                            "key": "username"
+                            "key": "id"
                         },
                         "allowNull": false
                     },
@@ -192,7 +207,7 @@ var migrationCommands = function(transaction) {
                         "allowNull": false
                     },
                     "description": {
-                        "type": Sequelize.STRING(45),
+                        "type": Sequelize.STRING(2000),
                         "field": "description",
                         "allowNull": true
                     },
@@ -211,12 +226,12 @@ var migrationCommands = function(transaction) {
                         "allowNull": true
                     },
                     "start_date": {
-                        "type": Sequelize.DATEONLY,
+                        "type": Sequelize.DATE,
                         "field": "start_date",
                         "allowNull": false
                     },
                     "end_date": {
-                        "type": Sequelize.DATEONLY,
+                        "type": Sequelize.DATE,
                         "field": "end_date",
                         "allowNull": false
                     },
@@ -231,14 +246,14 @@ var migrationCommands = function(transaction) {
                         "allowNull": true
                     },
                     "platform": {
-                        "type": Sequelize.ENUM('ZOOM', 'FACEBOOK'),
+                        "type": Sequelize.ENUM('ZOOM'),
                         "field": "platform",
-                        "allowNull": false
+                        "allowNull": true
                     },
                     "platform_media_id": {
                         "type": Sequelize.STRING(128),
                         "field": "platform_media_id",
-                        "allowNull": false
+                        "allowNull": true
                     },
                     "img_source": {
                         "type": Sequelize.STRING(128),
@@ -266,6 +281,7 @@ var migrationCommands = function(transaction) {
                     }
                 },
                 {
+                    "charset": "utf8mb4",
                     "transaction": transaction
                 }
             ]

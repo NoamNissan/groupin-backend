@@ -7,8 +7,8 @@ const db = require('../models');
 require('../controllers/user.controller');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/', function (req, res, next) {
+    res.send('respond with a resource');
 });
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email']}));
