@@ -19,63 +19,64 @@ var Sequelize = require('sequelize');
  **/
 
 var info = {
-    "revision": 3,
-    "name": "mytest",
-    "created": "2020-03-29T20:23:19.909Z",
-    "comment": ""
+    revision: 3,
+    name: 'mytest',
+    created: '2020-03-29T20:23:19.909Z',
+    comment: ''
 };
 
-var migrationCommands = function(transaction) {
-    return [{
-            fn: "removeColumn",
+var migrationCommands = function (transaction) {
+    return [
+        {
+            fn: 'removeColumn',
             params: [
-                "resessions",
-                "username",
+                'resessions',
+                'username',
                 {
                     transaction: transaction
                 }
             ]
         },
         {
-            fn: "removeColumn",
+            fn: 'removeColumn',
             params: [
-                "sessions",
-                "username",
+                'sessions',
+                'username',
                 {
                     transaction: transaction
                 }
             ]
         },
         {
-            fn: "removeColumn",
+            fn: 'removeColumn',
             params: [
-                "users",
-                "password_hash",
+                'users',
+                'password_hash',
                 {
                     transaction: transaction
                 }
             ]
         },
         {
-            fn: "removeColumn",
+            fn: 'removeColumn',
             params: [
-                "users",
-                "username",
+                'users',
+                'username',
                 {
                     transaction: transaction
                 }
             ]
         },
         {
-            fn: "addColumn",
+            fn: 'addColumn',
             params: [
-                "users",
-                "provider_user_id",
+                'users',
+                'provider_user_id',
                 {
-                    "type": Sequelize.STRING(45),
-                    "field": "provider_user_id",
-                    "unique": true,
-                    "allowNull": false
+                    type: Sequelize.STRING(45),
+                    field: 'provider_user_id',
+                    unique: true,
+                    allowNull: false
                 },
                 {
                     transaction: transaction
@@ -83,14 +84,14 @@ var migrationCommands = function(transaction) {
             ]
         },
         {
-            fn: "addColumn",
+            fn: 'addColumn',
             params: [
-                "users",
-                "provider",
+                'users',
+                'provider',
                 {
-                    "type": Sequelize.ENUM('FACEBOOK'),
-                    "field": "provider",
-                    "allowNull": false
+                    type: Sequelize.ENUM('FACEBOOK'),
+                    field: 'provider',
+                    allowNull: false
                 },
                 {
                     transaction: transaction
@@ -98,16 +99,16 @@ var migrationCommands = function(transaction) {
             ]
         },
         {
-            fn: "addColumn",
+            fn: 'addColumn',
             params: [
-                "users",
-                "id",
+                'users',
+                'id',
                 {
-                    "type": Sequelize.INTEGER.UNSIGNED,
-                    "field": "id",
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "allowNull": false
+                    type: Sequelize.INTEGER.UNSIGNED,
+                    field: 'id',
+                    primaryKey: true,
+                    autoIncrement: true,
+                    allowNull: false
                 },
                 {
                     transaction: transaction
@@ -115,18 +116,18 @@ var migrationCommands = function(transaction) {
             ]
         },
         {
-            fn: "addColumn",
+            fn: 'addColumn',
             params: [
-                "resessions",
-                "user_id",
+                'resessions',
+                'user_id',
                 {
-                    "type": Sequelize.INTEGER.UNSIGNED,
-                    "field": "user_id",
-                    "references": {
-                        "model": "users",
-                        "key": "id"
+                    type: Sequelize.INTEGER.UNSIGNED,
+                    field: 'user_id',
+                    references: {
+                        model: 'users',
+                        key: 'id'
                     },
-                    "allowNull": false
+                    allowNull: false
                 },
                 {
                     transaction: transaction
@@ -134,18 +135,18 @@ var migrationCommands = function(transaction) {
             ]
         },
         {
-            fn: "addColumn",
+            fn: 'addColumn',
             params: [
-                "sessions",
-                "user_id",
+                'sessions',
+                'user_id',
                 {
-                    "type": Sequelize.INTEGER.UNSIGNED,
-                    "field": "user_id",
-                    "references": {
-                        "model": "users",
-                        "key": "id"
+                    type: Sequelize.INTEGER.UNSIGNED,
+                    field: 'user_id',
+                    references: {
+                        model: 'users',
+                        key: 'id'
                     },
-                    "allowNull": false
+                    allowNull: false
                 },
                 {
                     transaction: transaction
@@ -153,14 +154,14 @@ var migrationCommands = function(transaction) {
             ]
         },
         {
-            fn: "changeColumn",
+            fn: 'changeColumn',
             params: [
-                "sessions",
-                "platform",
+                'sessions',
+                'platform',
                 {
-                    "type": Sequelize.ENUM('ZOOM'),
-                    "field": "platform",
-                    "allowNull": false
+                    type: Sequelize.ENUM('ZOOM'),
+                    field: 'platform',
+                    allowNull: false
                 },
                 {
                     transaction: transaction
@@ -169,66 +170,67 @@ var migrationCommands = function(transaction) {
         }
     ];
 };
-var rollbackCommands = function(transaction) {
-    return [{
-            fn: "removeColumn",
+var rollbackCommands = function (transaction) {
+    return [
+        {
+            fn: 'removeColumn',
             params: [
-                "resessions",
-                "user_id",
+                'resessions',
+                'user_id',
                 {
                     transaction: transaction
                 }
             ]
         },
         {
-            fn: "removeColumn",
+            fn: 'removeColumn',
             params: [
-                "sessions",
-                "user_id",
+                'sessions',
+                'user_id',
                 {
                     transaction: transaction
                 }
             ]
         },
         {
-            fn: "removeColumn",
+            fn: 'removeColumn',
             params: [
-                "users",
-                "provider_user_id",
+                'users',
+                'provider_user_id',
                 {
                     transaction: transaction
                 }
             ]
         },
         {
-            fn: "removeColumn",
+            fn: 'removeColumn',
             params: [
-                "users",
-                "provider",
+                'users',
+                'provider',
                 {
                     transaction: transaction
                 }
             ]
         },
         {
-            fn: "removeColumn",
+            fn: 'removeColumn',
             params: [
-                "users",
-                "id",
+                'users',
+                'id',
                 {
                     transaction: transaction
                 }
             ]
         },
         {
-            fn: "addColumn",
+            fn: 'addColumn',
             params: [
-                "users",
-                "password_hash",
+                'users',
+                'password_hash',
                 {
-                    "type": Sequelize.STRING(45),
-                    "field": "password_hash",
-                    "allowNull": false
+                    type: Sequelize.STRING(45),
+                    field: 'password_hash',
+                    allowNull: false
                 },
                 {
                     transaction: transaction
@@ -236,15 +238,15 @@ var rollbackCommands = function(transaction) {
             ]
         },
         {
-            fn: "addColumn",
+            fn: 'addColumn',
             params: [
-                "users",
-                "username",
+                'users',
+                'username',
                 {
-                    "type": Sequelize.STRING(45),
-                    "field": "username",
-                    "primaryKey": true,
-                    "allowNull": false
+                    type: Sequelize.STRING(45),
+                    field: 'username',
+                    primaryKey: true,
+                    allowNull: false
                 },
                 {
                     transaction: transaction
@@ -252,16 +254,16 @@ var rollbackCommands = function(transaction) {
             ]
         },
         {
-            fn: "addColumn",
+            fn: 'addColumn',
             params: [
-                "resessions",
-                "username",
+                'resessions',
+                'username',
                 {
-                    "type": Sequelize.STRING(45),
-                    "field": "username",
-                    "references": {
-                        "model": "users",
-                        "key": "username"
+                    type: Sequelize.STRING(45),
+                    field: 'username',
+                    references: {
+                        model: 'users',
+                        key: 'username'
                     }
                 },
                 {
@@ -270,18 +272,18 @@ var rollbackCommands = function(transaction) {
             ]
         },
         {
-            fn: "addColumn",
+            fn: 'addColumn',
             params: [
-                "sessions",
-                "username",
+                'sessions',
+                'username',
                 {
-                    "type": Sequelize.STRING(45),
-                    "field": "username",
-                    "references": {
-                        "model": "users",
-                        "key": "username"
+                    type: Sequelize.STRING(45),
+                    field: 'username',
+                    references: {
+                        model: 'users',
+                        key: 'username'
                     },
-                    "allowNull": false
+                    allowNull: false
                 },
                 {
                     transaction: transaction
@@ -289,14 +291,14 @@ var rollbackCommands = function(transaction) {
             ]
         },
         {
-            fn: "changeColumn",
+            fn: 'changeColumn',
             params: [
-                "sessions",
-                "platform",
+                'sessions',
+                'platform',
                 {
-                    "type": Sequelize.ENUM('ZOOM', 'FACEBOOK'),
-                    "field": "platform",
-                    "allowNull": false
+                    type: Sequelize.ENUM('ZOOM', 'FACEBOOK'),
+                    field: 'platform',
+                    allowNull: false
                 },
                 {
                     transaction: transaction
@@ -309,22 +311,20 @@ var rollbackCommands = function(transaction) {
 module.exports = {
     pos: 0,
     useTransaction: true,
-    execute: function(queryInterface, Sequelize, _commands)
-    {
+    execute: function (queryInterface, Sequelize, _commands) {
         var index = this.pos;
         function run(transaction) {
             const commands = _commands(transaction);
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 function next() {
-                    if (index < commands.length)
-                    {
+                    if (index < commands.length) {
                         let command = commands[index];
-                        console.log("[#"+index+"] execute: " + command.fn);
+                        console.log('[#' + index + '] execute: ' + command.fn);
                         index++;
-                        queryInterface[command.fn].apply(queryInterface, command.params).then(next, reject);
-                    }
-                    else
-                        resolve();
+                        queryInterface[command.fn]
+                            .apply(queryInterface, command.params)
+                            .then(next, reject);
+                    } else resolve();
                 }
                 next();
             });
@@ -335,12 +335,10 @@ module.exports = {
             return run(null);
         }
     },
-    up: function(queryInterface, Sequelize)
-    {
+    up: function (queryInterface, Sequelize) {
         return this.execute(queryInterface, Sequelize, migrationCommands);
     },
-    down: function(queryInterface, Sequelize)
-    {
+    down: function (queryInterface, Sequelize) {
         return this.execute(queryInterface, Sequelize, rollbackCommands);
     },
     info: info
