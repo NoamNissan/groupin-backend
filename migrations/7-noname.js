@@ -5,14 +5,15 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * changeColumn "username" on table "resessions"
+ * changeColumn "end_date" on table "sessions"
+ * changeColumn "start_date" on table "sessions"
  *
  **/
 
 var info = {
-    revision: 2,
-    name: 'generalmigration',
-    created: '2020-03-29T11:09:26.556Z',
+    revision: 7,
+    name: 'noname',
+    created: '2020-03-30T19:00:11.349Z',
     comment: ''
 };
 
@@ -21,15 +22,27 @@ var migrationCommands = function (transaction) {
         {
             fn: 'changeColumn',
             params: [
-                'resessions',
-                'username',
+                'sessions',
+                'end_date',
                 {
-                    type: Sequelize.STRING(45),
-                    field: 'username',
-                    references: {
-                        model: 'users',
-                        key: 'username'
-                    }
+                    type: Sequelize.DATE,
+                    field: 'end_date',
+                    allowNull: false
+                },
+                {
+                    transaction: transaction
+                }
+            ]
+        },
+        {
+            fn: 'changeColumn',
+            params: [
+                'sessions',
+                'start_date',
+                {
+                    type: Sequelize.DATE,
+                    field: 'start_date',
+                    allowNull: false
                 },
                 {
                     transaction: transaction
@@ -43,16 +56,27 @@ var rollbackCommands = function (transaction) {
         {
             fn: 'changeColumn',
             params: [
-                'resessions',
-                'username',
+                'sessions',
+                'end_date',
                 {
-                    type: Sequelize.STRING(45),
-                    field: 'username',
-                    references: {
-                        model: 'users',
-                        key: 'username'
-                    },
-                    allowNull: true
+                    type: Sequelize.DATEONLY,
+                    field: 'end_date',
+                    allowNull: false
+                },
+                {
+                    transaction: transaction
+                }
+            ]
+        },
+        {
+            fn: 'changeColumn',
+            params: [
+                'sessions',
+                'start_date',
+                {
+                    type: Sequelize.DATEONLY,
+                    field: 'start_date',
+                    allowNull: false
                 },
                 {
                     transaction: transaction

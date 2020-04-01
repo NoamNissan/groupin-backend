@@ -13,289 +13,303 @@ var Sequelize = require('sequelize');
  **/
 
 var info = {
-    "revision": 1,
-    "name": "db_migration",
-    "created": "2020-03-28T21:35:47.903Z",
-    "comment": ""
+    revision: 1,
+    name: 'db_migration',
+    created: '2020-03-28T21:35:47.903Z',
+    comment: ''
 };
 
-var migrationCommands = function(transaction) {
-    return [{
-            fn: "createTable",
+var migrationCommands = function (transaction) {
+    return [
+        {
+            fn: 'createTable',
             params: [
-                "categories",
+                'categories',
                 {
-                    "id": {
-                        "type": Sequelize.INTEGER,
-                        "field": "id",
-                        "primaryKey": true,
-                        "autoIncrement": true,
-                        "allowNull": false
+                    id: {
+                        type: Sequelize.INTEGER,
+                        field: 'id',
+                        primaryKey: true,
+                        autoIncrement: true,
+                        allowNull: false
                     },
-                    "name": {
-                        "type": Sequelize.STRING(100),
-                        "field": "name",
-                        "allowNull": false
+                    name: {
+                        type: Sequelize.STRING(100),
+                        field: 'name',
+                        allowNull: false
                     },
-                    "createdAt": {
-                        "type": Sequelize.DATE,
-                        "field": "createdAt",
-                        "allowNull": false
+                    createdAt: {
+                        type: Sequelize.DATE,
+                        field: 'createdAt',
+                        allowNull: false
                     },
-                    "updatedAt": {
-                        "type": Sequelize.DATE,
-                        "field": "updatedAt",
-                        "allowNull": false
+                    updatedAt: {
+                        type: Sequelize.DATE,
+                        field: 'updatedAt',
+                        allowNull: false
                     }
                 },
                 {
-                    "transaction": transaction
+                    transaction: transaction
                 }
             ]
         },
         {
-            fn: "createTable",
+            fn: 'createTable',
             params: [
-                "users",
+                'users',
                 {
-                    "username": {
-                        "type": Sequelize.STRING(45),
-                        "field": "username",
-                        "primaryKey": true,
-                        "allowNull": false
+                    username: {
+                        type: Sequelize.STRING(45),
+                        field: 'username',
+                        primaryKey: true,
+                        allowNull: false
                     },
-                    "password_hash": {
-                        "type": Sequelize.STRING(45),
-                        "field": "password_hash",
-                        "allowNull": false
+                    password_hash: {
+                        type: Sequelize.STRING(45),
+                        field: 'password_hash',
+                        allowNull: false
                     },
-                    "email": {
-                        "type": Sequelize.STRING(45),
-                        "field": "email",
-                        "unique": true,
-                        "allowNull": false
+                    email: {
+                        type: Sequelize.STRING(45),
+                        field: 'email',
+                        unique: true,
+                        allowNull: false
                     },
-                    "display_name": {
-                        "type": Sequelize.STRING(45),
-                        "field": "display_name",
-                        "allowNull": false
+                    display_name: {
+                        type: Sequelize.STRING(45),
+                        field: 'display_name',
+                        allowNull: false
                     },
-                    "is_admin": {
-                        "type": Sequelize.BOOLEAN,
-                        "field": "is_admin",
-                        "defaultValue": false,
-                        "allowNull": true
+                    is_admin: {
+                        type: Sequelize.BOOLEAN,
+                        field: 'is_admin',
+                        defaultValue: false,
+                        allowNull: true
                     },
-                    "is_premium": {
-                        "type": Sequelize.BOOLEAN,
-                        "field": "is_premium",
-                        "defaultValue": false,
-                        "allowNull": true
+                    is_premium: {
+                        type: Sequelize.BOOLEAN,
+                        field: 'is_premium',
+                        defaultValue: false,
+                        allowNull: true
                     },
-                    "img_source": {
-                        "type": Sequelize.STRING(128),
-                        "field": "img_source",
-                        "allowNull": true
+                    img_source: {
+                        type: Sequelize.STRING(128),
+                        field: 'img_source',
+                        allowNull: true
                     },
-                    "createdAt": {
-                        "type": Sequelize.DATE,
-                        "field": "createdAt",
-                        "allowNull": false
+                    createdAt: {
+                        type: Sequelize.DATE,
+                        field: 'createdAt',
+                        allowNull: false
                     },
-                    "updatedAt": {
-                        "type": Sequelize.DATE,
-                        "field": "updatedAt",
-                        "allowNull": false
+                    updatedAt: {
+                        type: Sequelize.DATE,
+                        field: 'updatedAt',
+                        allowNull: false
                     }
                 },
                 {
-                    "transaction": transaction
+                    transaction: transaction
                 }
             ]
         },
         {
-            fn: "createTable",
+            fn: 'createTable',
             params: [
-                "resessions",
+                'resessions',
                 {
-                    "id": {
-                        "type": Sequelize.INTEGER.UNSIGNED,
-                        "field": "id",
-                        "primaryKey": true,
-                        "autoIncrement": true,
-                        "allowNull": false
+                    id: {
+                        type: Sequelize.INTEGER.UNSIGNED,
+                        field: 'id',
+                        primaryKey: true,
+                        autoIncrement: true,
+                        allowNull: false
                     },
-                    "title": {
-                        "type": Sequelize.STRING(45),
-                        "field": "title",
-                        "allowNull": false
+                    title: {
+                        type: Sequelize.STRING(45),
+                        field: 'title',
+                        allowNull: false
                     },
-                    "description": {
-                        "type": Sequelize.STRING(500),
-                        "field": "description",
-                        "allowNull": true
+                    description: {
+                        type: Sequelize.STRING(500),
+                        field: 'description',
+                        allowNull: true
                     },
-                    "recurrence_freq": {
-                        "type": Sequelize.ENUM('DAILY', 'WEEKLY', 'MONTHLY'),
-                        "field": "recurrence_freq",
-                        "allowNull": true
+                    recurrence_freq: {
+                        type: Sequelize.ENUM('DAILY', 'WEEKLY', 'MONTHLY'),
+                        field: 'recurrence_freq',
+                        allowNull: true
                     },
-                    "username": {
-                        "type": Sequelize.STRING(45),
-                        "field": "username",
-                        "references": {
-                            "model": "users",
-                            "key": "username"
+                    username: {
+                        type: Sequelize.STRING(45),
+                        field: 'username',
+                        references: {
+                            model: 'users',
+                            key: 'username'
                         },
-                        "allowNull": true
+                        allowNull: true
                     },
-                    "createdAt": {
-                        "type": Sequelize.DATE,
-                        "field": "createdAt",
-                        "allowNull": false
+                    createdAt: {
+                        type: Sequelize.DATE,
+                        field: 'createdAt',
+                        allowNull: false
                     },
-                    "updatedAt": {
-                        "type": Sequelize.DATE,
-                        "field": "updatedAt",
-                        "allowNull": false
+                    updatedAt: {
+                        type: Sequelize.DATE,
+                        field: 'updatedAt',
+                        allowNull: false
                     }
                 },
                 {
-                    "transaction": transaction
+                    transaction: transaction
                 }
             ]
         },
         {
-            fn: "createTable",
+            fn: 'createTable',
             params: [
-                "sessions",
+                'sessions',
                 {
-                    "id": {
-                        "type": Sequelize.INTEGER.UNSIGNED,
-                        "field": "id",
-                        "primaryKey": true,
-                        "autoIncrement": true,
-                        "allowNull": false
+                    id: {
+                        type: Sequelize.INTEGER.UNSIGNED,
+                        field: 'id',
+                        primaryKey: true,
+                        autoIncrement: true,
+                        allowNull: false
                     },
-                    "username": {
-                        "type": Sequelize.STRING(45),
-                        "field": "username",
-                        "references": {
-                            "model": "users",
-                            "key": "username"
+                    username: {
+                        type: Sequelize.STRING(45),
+                        field: 'username',
+                        references: {
+                            model: 'users',
+                            key: 'username'
                         },
-                        "allowNull": false
+                        allowNull: false
                     },
-                    "title": {
-                        "type": Sequelize.STRING(45),
-                        "field": "title",
-                        "allowNull": false
+                    title: {
+                        type: Sequelize.STRING(45),
+                        field: 'title',
+                        allowNull: false
                     },
-                    "description": {
-                        "type": Sequelize.STRING(45),
-                        "field": "description",
-                        "allowNull": true
+                    description: {
+                        type: Sequelize.STRING(45),
+                        field: 'description',
+                        allowNull: true
                     },
-                    "category": {
-                        "type": Sequelize.INTEGER,
-                        "field": "category",
-                        "references": {
-                            "model": "categories",
-                            "key": "id"
+                    category: {
+                        type: Sequelize.INTEGER,
+                        field: 'category',
+                        references: {
+                            model: 'categories',
+                            key: 'id'
                         },
-                        "allowNull": true
+                        allowNull: true
                     },
-                    "tags": {
-                        "type": Sequelize.STRING(128),
-                        "field": "tags",
-                        "allowNull": true
+                    tags: {
+                        type: Sequelize.STRING(128),
+                        field: 'tags',
+                        allowNull: true
                     },
-                    "start_date": {
-                        "type": Sequelize.DATEONLY,
-                        "field": "start_date",
-                        "allowNull": false
+                    start_date: {
+                        type: Sequelize.DATEONLY,
+                        field: 'start_date',
+                        allowNull: false
                     },
-                    "end_date": {
-                        "type": Sequelize.DATEONLY,
-                        "field": "end_date",
-                        "allowNull": false
+                    end_date: {
+                        type: Sequelize.DATEONLY,
+                        field: 'end_date',
+                        allowNull: false
                     },
-                    "capacity": {
-                        "type": Sequelize.INTEGER.UNSIGNED,
-                        "field": "capacity",
-                        "allowNull": true
+                    capacity: {
+                        type: Sequelize.INTEGER.UNSIGNED,
+                        field: 'capacity',
+                        allowNull: true
                     },
-                    "attendees": {
-                        "type": Sequelize.INTEGER.UNSIGNED,
-                        "field": "attendees",
-                        "allowNull": true
+                    attendees: {
+                        type: Sequelize.INTEGER.UNSIGNED,
+                        field: 'attendees',
+                        allowNull: true
                     },
-                    "platform": {
-                        "type": Sequelize.ENUM('ZOOM', 'FACEBOOK'),
-                        "field": "platform",
-                        "allowNull": false
+                    platform: {
+                        type: Sequelize.ENUM('ZOOM', 'FACEBOOK'),
+                        field: 'platform',
+                        allowNull: false
                     },
-                    "platform_media_id": {
-                        "type": Sequelize.STRING(128),
-                        "field": "platform_media_id",
-                        "allowNull": false
+                    platform_media_id: {
+                        type: Sequelize.STRING(128),
+                        field: 'platform_media_id',
+                        allowNull: false
                     },
-                    "img_source": {
-                        "type": Sequelize.STRING(128),
-                        "field": "img_source",
-                        "allowNull": true
+                    img_source: {
+                        type: Sequelize.STRING(128),
+                        field: 'img_source',
+                        allowNull: true
                     },
-                    "resession_id": {
-                        "type": Sequelize.INTEGER.UNSIGNED,
-                        "field": "resession_id",
-                        "references": {
-                            "model": "resessions",
-                            "key": "id"
+                    resession_id: {
+                        type: Sequelize.INTEGER.UNSIGNED,
+                        field: 'resession_id',
+                        references: {
+                            model: 'resessions',
+                            key: 'id'
                         },
-                        "allowNull": true
+                        allowNull: true
                     },
-                    "createdAt": {
-                        "type": Sequelize.DATE,
-                        "field": "createdAt",
-                        "allowNull": false
+                    createdAt: {
+                        type: Sequelize.DATE,
+                        field: 'createdAt',
+                        allowNull: false
                     },
-                    "updatedAt": {
-                        "type": Sequelize.DATE,
-                        "field": "updatedAt",
-                        "allowNull": false
+                    updatedAt: {
+                        type: Sequelize.DATE,
+                        field: 'updatedAt',
+                        allowNull: false
                     }
                 },
                 {
-                    "transaction": transaction
+                    transaction: transaction
                 }
             ]
         }
     ];
 };
-var rollbackCommands = function(transaction) {
-    return [{
-            fn: "dropTable",
-            params: ["categories", {
-                transaction: transaction
-            }]
+var rollbackCommands = function (transaction) {
+    return [
+        {
+            fn: 'dropTable',
+            params: [
+                'categories',
+                {
+                    transaction: transaction
+                }
+            ]
         },
         {
-            fn: "dropTable",
-            params: ["resessions", {
-                transaction: transaction
-            }]
+            fn: 'dropTable',
+            params: [
+                'resessions',
+                {
+                    transaction: transaction
+                }
+            ]
         },
         {
-            fn: "dropTable",
-            params: ["sessions", {
-                transaction: transaction
-            }]
+            fn: 'dropTable',
+            params: [
+                'sessions',
+                {
+                    transaction: transaction
+                }
+            ]
         },
         {
-            fn: "dropTable",
-            params: ["users", {
-                transaction: transaction
-            }]
+            fn: 'dropTable',
+            params: [
+                'users',
+                {
+                    transaction: transaction
+                }
+            ]
         }
     ];
 };
@@ -303,22 +317,20 @@ var rollbackCommands = function(transaction) {
 module.exports = {
     pos: 0,
     useTransaction: true,
-    execute: function(queryInterface, Sequelize, _commands)
-    {
+    execute: function (queryInterface, Sequelize, _commands) {
         var index = this.pos;
         function run(transaction) {
             const commands = _commands(transaction);
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 function next() {
-                    if (index < commands.length)
-                    {
+                    if (index < commands.length) {
                         let command = commands[index];
-                        console.log("[#"+index+"] execute: " + command.fn);
+                        console.log('[#' + index + '] execute: ' + command.fn);
                         index++;
-                        queryInterface[command.fn].apply(queryInterface, command.params).then(next, reject);
-                    }
-                    else
-                        resolve();
+                        queryInterface[command.fn]
+                            .apply(queryInterface, command.params)
+                            .then(next, reject);
+                    } else resolve();
                 }
                 next();
             });
@@ -329,12 +341,10 @@ module.exports = {
             return run(null);
         }
     },
-    up: function(queryInterface, Sequelize)
-    {
+    up: function (queryInterface, Sequelize) {
         return this.execute(queryInterface, Sequelize, migrationCommands);
     },
-    down: function(queryInterface, Sequelize)
-    {
+    down: function (queryInterface, Sequelize) {
         return this.execute(queryInterface, Sequelize, rollbackCommands);
     },
     info: info

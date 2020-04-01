@@ -14,15 +14,17 @@ var dbconfig = require('./config/config.js')[env];
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var db = require('./models');
+
 // setup DB connection
 var connection = mysql.createConnection({
-    host     : dbconfig.host,
-    port     : dbconfig.port,
-    user     : dbconfig.username,
-    password : dbconfig.password,
+    host: dbconfig.host,
+    port: dbconfig.port,
+    user: dbconfig.username,
+    password: dbconfig.password
 });
 
-connection.connect(function(err) {
+connection.connect(function (err) {
     if (err) {
         console.error('error connecting: ' + err.stack);
         return;
@@ -61,15 +63,37 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 var graphqlHTTP = require('express-graphql');
-var { mockSchema, mockResolver } = require('./schemas/mock_api_schema');
+var schema = require('./schemas/api_schema');
+var errors = require('./schemas/api_schema_errors');
+
+const is_prod = process.env.NODE_ENV === 'production';
 
 // The root provides a resolver function for each API endpoint
 var root = app.use(
-  '/graphql',
+    '/graphql',
   graphqlHTTP({
-    schema: mockSchema,
-    rootValue: mockResolver,
-    graphiql: true,
+        schema: schema,
+        // graphiql only when not in production
+        graphiql: !is_prod,
+        context: { db: db },
+        customFormatErrorFn: (error) => {
+            // We'd like to translate the error we've gotten to the FormatError
+            // if it exists and then report it, if such object does not exist,
+            // don't propagate the error to the client (do LOG it!)
+            const error_secondary = errors.getError(error);
+
+            // An unexepcted error was raised, that's bad!
+            if (error === error_secondary) {
+                // TODO: log the bug here
+
+                // I'm fine with returning the real error if we're not in prod
+                if (is_prod) {
+                    return errors.errorType['INTERNAL_SERVER_ERROR'];
+                }
+            }
+
+            return error;
+        }
   })
 );
 
@@ -82,11 +106,11 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+    res.render('error');
 });
 
 module.exports = app;
