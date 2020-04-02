@@ -37,17 +37,23 @@ router.get('/logout', (req, res) => {
     if(!req.user) {
         return;
     }
+
     let user_id = req.user.provider_user_id;
-    req.session.destroy((err) => {
-        if(err) {
-            console.log('logout failed. what what?');
-        }
-        if(req.query.deregister) {
-            console.log('also removing user from DB');
-            db.User.destroy({where : {provider_user_id : user_id}});
-        }
+    req.logout();
+    if(req.query.deregister) {
+        db.User.destroy({where : {provider_user_id : user_id}})
+            .then(() => {
+                res.redirect('demo');
+                // res.status(200).send('ok');
+            })
+            .catch(() => {
+                res.status(400).send('Failed to delete acount');
+            })
+    }
+    else {
         res.redirect('demo');
-    })
+        // res.status(200).send('ok');
+    }
 });
 
 router.get('/deregister', (req,res) => {
