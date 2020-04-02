@@ -36,7 +36,7 @@ module.exports = {
         dialectOptions: {
             bigNumberStrings: true,
             ssl: {
-                ca: fs.readFileSync(process.env.DB_CERT_FILE)
+                ca: fs.readFileSync(__dirname + '/config/BaltimoreCyberTrustRoot.crt.pem')
             }
         },
         // use_env_variable: 'DATABASE_URL',
