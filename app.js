@@ -90,6 +90,7 @@ var root = app.use(
     })
 );
 
+app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

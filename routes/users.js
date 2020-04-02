@@ -37,7 +37,7 @@ router.get('/logout', (req, res) => {
     if(!req.user) {
         return;
     }
-    let user_id = req.user.dataValues.provider_user_id;
+    let user_id = req.user.provider_user_id;
     req.session.destroy((err) => {
         if(err) {
             console.log('logout failed. what what?');

@@ -4,7 +4,7 @@ block content
     h1 Facebook Login demo
     p This is a demo to the facebook OAuth login feature
     if user
-        p You're logged in as #{user.dataValues.display_name}
+        p You're logged in as #{user.display_name}
     else
         p No user is connected
     a(href='/users/auth/facebook') Connect with Facebook

@@ -51,6 +51,8 @@ passport.use(
                         else {
                             return done(null, newUser);
                         }
+                    }).catch((err) => {
+                        return done(err);
                     })
                 }
             })
