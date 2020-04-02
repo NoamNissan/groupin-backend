@@ -26,23 +26,23 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-if (env == 'production' || env == 'test') {
+if (env === 'productionnnn' || env === 'test') {
     var RedisStore = require('connect-redis')(session);
     var redisClient = redis.createClient();
 }
 
 var sess = {
     store:
-        env == 'production' || env == 'test'
+        env === 'productionnnn' || env === 'test'
             ? new RedisStore({ client: redisClient })
             : undefined,
     secret: server_config.session_secret,
     saveUninitialized: false,
     resave: false,
-    cookie: {}
+    cookie : {}
 };
 
-if (env == 'production' || env == 'test') {
+if(env === 'productionnnn' || env === 'test') {
     app.set('trust proxy', 1);
     sess.cookie.secure = true;
 }

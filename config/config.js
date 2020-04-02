@@ -1,3 +1,6 @@
+fs = require('fs');
+dotenv = require('dotenv');
+dotenv.config();
 module.exports = {
     development: {
         username: 'groupin',
@@ -30,7 +33,13 @@ module.exports = {
         database: process.env.DB_NAME,
         host: process.env.DB_HOSTNAME,
         dialect: 'mysql',
-        use_env_variable: 'DATABASE_URL',
+        dialectOptions: {
+            bigNumberStrings: true,
+            ssl: {
+                ca: fs.readFileSync(process.env.DB_CERT_FILE)
+            }
+        },
+        // use_env_variable: 'DATABASE_URL',
         define: {
             charset: 'utf8mb4',
             collate: 'utf8mb4_general_ci'
