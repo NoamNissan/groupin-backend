@@ -11,7 +11,7 @@ var models = require('../models');
 const env = process.env.NODE_ENV || 'development';
 
 console.log('env is ' + env);
-if(env == 'production' || env == 'test') {
+if(env === 'productionnnn' || env === 'test') {
   /**
    * Initialize a redis server
    */

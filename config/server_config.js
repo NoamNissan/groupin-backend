@@ -1,3 +1,5 @@
+dotenv = require('dotenv');
+dotenv.config();
 module.exports = {
     development: {
         root_password: 'p@sswordvery$ecret',

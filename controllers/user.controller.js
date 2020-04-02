@@ -7,7 +7,7 @@ const FacebookStrategy = strategy.Strategy;
 
 // Serialize data into the session. sending only the user id
 passport.serializeUser(function(user, done) {
-    done(null, user.dataValues.id);
+    done(null, user.id);
 });
 
 // Deserialize the user data from the session. find user by user id
@@ -32,7 +32,6 @@ passport.use(
         },
         function(accessToken, refreshToken, profile, done) {
             const { email, name, picture, id } = profile._json;
-
             db.User.findOne({where : {email}}).then((user) => {
                 if(user) {
                     return done(null, user);

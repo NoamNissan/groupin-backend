@@ -26,15 +26,14 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser()); // DO NOT MODIFY THIS LINE, IT MAY SCREW UP EXPRESS-SESSION
-if (env == 'production' || env == 'test') {
+if (env === 'productionnnn' || env === 'test') {
     var RedisStore = require('connect-redis')(session);
     var redisClient = redis.createClient();
 }
 
 var sess = {
     store:
-        env == 'production' || env == 'test'
+        env === 'productionnnn' || env === 'test'
             ? new RedisStore({ client: redisClient })
             : undefined,
     secret: server_config.session_secret,
@@ -43,7 +42,7 @@ var sess = {
     cookie : {}
 };
 
-if(env == 'production' || env == 'test') {
+if(env === 'productionnnn' || env === 'test') {
     app.set('trust proxy', 1);
     sess.cookie.secure = true;
 }
