@@ -7,7 +7,7 @@ const FacebookStrategy = strategy.Strategy;
 
 // Serialize data into the session. sending only the user id
 passport.serializeUser(function(user, done) {
-    done(null, user.dataValues.id);
+    done(null, user.id);
 });
 
 // Deserialize the user data from the session. find user by user id
@@ -52,6 +52,8 @@ passport.use(
                         else {
                             return done(null, newUser);
                         }
+                    }).catch((err) => {
+                        return done(err);
                     })
                 }
             })

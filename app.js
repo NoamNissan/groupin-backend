@@ -26,7 +26,6 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser()); // DO NOT MODIFY THIS LINE, IT MAY SCREW UP EXPRESS-SESSION
 if (env == 'production' || env == 'test') {
     var RedisStore = require('connect-redis')(session);
     var redisClient = redis.createClient();
@@ -91,6 +90,7 @@ var root = app.use(
     })
 );
 
+app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
