@@ -6,17 +6,10 @@ function strip_null(obj) {
     return obj;
 }
 
-// TODO: remove when login is implemented
-// TODO: all instances of user_token should be swapped with some real login auth token
-const USER_AUTHENTICATED = true;
-
-function check_auth(token) {
-    if (USER_AUTHENTICATED) {
-        // TODO: switch to the real user id
-        return '1';
+function check_auth(user) {
+    if (!user) {
+        throw new Error(errors.UNLOGGED_USER);
     }
-
-    throw new Error(errors.UNAUTHORIZED);
 }
 
 // Don't return more than MAX_SESSIONS_COUNT sessions in a single request!
@@ -34,12 +27,18 @@ const schema = makeExecutableSchema({
         `
 scalar Date
 
-type User {
+type UserDetailed {
     id: ID!
     email: String!
     display_name: String!
     is_admin: String
     is_premium: String
+    img_source: String
+}
+
+type User {
+    id: ID!
+    display_name: String!
     img_source: String
 }
 
@@ -87,6 +86,7 @@ type Resession {
 type Query {
     hello: String
     User(id: ID!): User
+    UserDetailed: UserDetailed
     Session(id: ID!): Session
     FrontSessions(start: Int!, count: Int!): [Session!]!
     Categories: [Category!]!
@@ -97,19 +97,24 @@ type Query {
 }
 
 type Mutation {
-    createSession(user_token: ID!, title: String!, category: ID!): Session
-    editSession(user_token: ID!, session_id: ID!, title: String, description: String, category: ID, tags: String, start_date: Date, end_date: Date, 
-                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String): Boolean!
-    deleteSession(user_token: ID!, session_id: ID): Boolean!
+    createSession(title: String!, category: ID!): Session
+    editSession(session_id: ID!, title: String, description: String, category: ID, tags: String, start_date: Date, end_date: Date, 
+                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String): Boolean
+    deleteSession(session_id: ID): Boolean
 }
 `
     ],
     resolvers: {
         Query: {
-            // Hello is left for sanity, TODO remove when saner
-            hello: () => 'Hello world!',
             // A Stub, currently, fix when implementing login / register
-            User: (parent, { id }, { db }, info) => db.User.findByPk(id),
+            User: (parent, { id }, { db }, info) => {
+                return db.User.findByPk(id);
+            },
+            UserDetailed: (parent, args, { user }, info) => {
+                check_auth(user);
+
+                return user;
+            },
             Session: (parnet, { id }, { db }, info) => db.Session.findByPk(id),
             Categories: (parent, args, { db }, info) => db.Category.findAll(),
             FrontSessions: (parent, { start, count }, { db }, info) => {
@@ -159,23 +164,20 @@ type Mutation {
                     limit: count
                 });
             }
-            // TODO: Implement login
-            // login: () => {
-            //   return "5";
-            // },
         },
         Mutation: {
             createSession: (
                 parent,
-                { user_token, title, category },
-                { db },
+                { title, category },
+                { db, user },
                 info
             ) => {
-                const user_id = check_auth(user_token);
+                check_auth(user);
+
                 const tomorrow = new Date();
                 tomorrow.setDate(new Date().getDate() + 1);
                 return db.Session.create({
-                    user_id: user_id,
+                    user_id: user.id,
                     title: title,
                     category: category,
                     start_date: tomorrow,
@@ -185,7 +187,6 @@ type Mutation {
             editSession: async (
                 parent,
                 {
-                    user_token,
                     session_id,
                     title,
                     description,
@@ -199,11 +200,12 @@ type Mutation {
                     platform_media_id,
                     img_source
                 },
-                { db },
+                { db, user },
                 info
             ) => {
                 // TODO: sanitize the date (end > start)
-                const user_id = check_auth(user_token);
+                check_auth(user);
+
                 const affected_rows = (
                     await db.Session.update(
                         strip_null({
@@ -220,7 +222,7 @@ type Mutation {
                             img_source: img_source
                         }),
                         {
-                            where: { id: session_id, user_id: user_id }
+                            where: { id: session_id, user_id: user.id }
                         }
                     )
                 )[0];
@@ -237,11 +239,6 @@ type Mutation {
             // This is not important enough for the demo
             // deleteSession: (parent, args, { db }, info) => true,
             // deleteResession: (parent, args, { db }, info) => true,
-
-            // TODO: Implement register
-            // register: (parent, args, { db }, info) => {
-            //   return true;
-            // },
         },
         Date: {
             __parseValue(value) {
