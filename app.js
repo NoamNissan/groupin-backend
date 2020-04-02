@@ -4,31 +4,16 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-var mysql = require('mysql');
+var redis = require('redis');
+var session = require('express-session');
+var passport = require('passport');
 const env = process.env.NODE_ENV || 'development';
-var dbconfig = require('./config/config.js')[env];
+var server_config = require('./config/server_config.js')[env];
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var db = require('./models');
-
-// setup DB connection
-var connection = mysql.createConnection({
-    host: dbconfig.host,
-    port: dbconfig.port,
-    user: dbconfig.username,
-    password: dbconfig.password
-});
-
-connection.connect(function (err) {
-    if (err) {
-        console.error('error connecting: ' + err.stack);
-        return;
-    }
-
-    console.log('connected as id ' + connection.threadId);
-});
 
 var app = express();
 
@@ -41,11 +26,32 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+if (env == 'production' || env == 'test') {
+    var RedisStore = require('connect-redis')(session);
+    var redisClient = redis.createClient();
+}
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+var sess = {
+    store:
+        env == 'production' || env == 'test'
+            ? new RedisStore({ client: redisClient })
+            : undefined,
+    secret: server_config.session_secret,
+    saveUninitialized: false,
+    resave: false,
+    cookie : {}
+};
+
+if(env == 'production' || env == 'test') {
+    app.set('trust proxy', 1);
+    sess.cookie.secure = true;
+}
+
+app.use(session(sess));
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(path.join(__dirname, 'public')));
 
 var graphqlHTTP = require('express-graphql');
 var schema = require('./schemas/api_schema');
@@ -83,6 +89,9 @@ var root = app.use(
         }
     })
 );
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

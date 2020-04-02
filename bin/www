@@ -8,7 +8,25 @@ var app = require('../app');
 var debug = require('debug')('backend:server');
 var http = require('http');
 var models = require('../models');
+const env = process.env.NODE_ENV || 'development';
 
+console.log('env is ' + env);
+if(env == 'production' || env == 'test') {
+  /**
+   * Initialize a redis server
+   */
+  const RedisServer = require('redis-server');
+
+// Simply pass the port that you want a Redis server to listen on.
+  const redis_server = new RedisServer(); //<-- default port
+
+  redis_server.open((err) => {
+    if (err === null) {
+      console.log(err);
+    }
+    console.log('Redis server is up and running');
+  });
+}
 /**
  * Get port from environment and store in Express.
  */
