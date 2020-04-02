@@ -13,7 +13,7 @@ const errors = new FormatError([
     },
     {
         name: 'INVALID_DATES',
-        message: 'One or more of the dates passed is invalid',
+        message: 'One or more of the dates passed are invalid',
         statusCode: 400
     }
 ]);
