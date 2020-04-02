@@ -48,7 +48,7 @@ enum Platform {
 
 type Session {
     id: ID!
-    user_id: ID!
+    User: User!
     title: String!
     description: String
     category: ID!
@@ -164,6 +164,10 @@ type Mutation {
                     limit: count
                 });
             }
+        },
+        Session: {
+            User: (parent, args, { db }, info) =>
+                db.User.findByPk(parent.user_id)
         },
         Mutation: {
             createSession: (
