@@ -216,13 +216,19 @@ type Mutation {
 
                 let start_date, end_date;
 
+                const MIN_TIME_BETWEEN = 10 * 60 * 1000; // 10 minutes
+                const MAX_TIME_BETWEEN = 3 * 60 * 60 * 1000; // 3 hours
                 if (time_range) {
+                    const time_diff =
+                        time_range.end_date - time_range.start_date;
                     // If the end date is before or equal to the start date
                     if (
                         time_range.end_date <= time_range.start_date ||
                         // If the start_date is before the current time
                         // TODO: how does this handle timezones? are we safe?
-                        time_range.start_date < new Date().getTime()
+                        time_range.start_date < new Date().getTime() ||
+                        time_diff < MIN_TIME_BETWEEN ||
+                        time_diff > MAX_TIME_BETWEEN
                     ) {
                         console.log(new Date().getTime());
                         throw new Error(errors.INVALID_DATES);
