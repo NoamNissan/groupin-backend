@@ -230,7 +230,6 @@ type Mutation {
                         time_diff < MIN_TIME_BETWEEN ||
                         time_diff > MAX_TIME_BETWEEN
                     ) {
-                        console.log(new Date().getTime());
                         throw new Error(errors.INVALID_DATES);
                     }
 
