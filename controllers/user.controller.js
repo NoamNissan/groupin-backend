@@ -44,15 +44,19 @@ passport.use(
                         provider_user_id: id,
                         img_source: picture.data.url
                     };
-                    db.User.create(newUser).then((newUser, created) => {
-                        if (!newUser) {
-                            return done(null, false, {
-                                message: 'user creation failed'
-                            });
-                        } else {
-                            return done(null, newUser);
-                        }
-                    });
+                    db.User.create(newUser)
+                        .then((newUser, created) => {
+                            if (!newUser) {
+                                return done(null, false, {
+                                    message: 'user creation failed'
+                                });
+                            } else {
+                                return done(null, newUser);
+                            }
+                        })
+                        .catch((err) => {
+                            return done(err);
+                        });
                 }
             });
         }
