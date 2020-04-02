@@ -9,7 +9,8 @@
         "migrate": "node_modules/.bin/sequelize db:migrate",
         "makemigration": "node node_modules/sequelize-auto-migrations/bin/makemigration.js --name",
         "seed": "node_modules/.bin/sequelize db:seed:all",
-        "pretty": "prettier --write \"./**/*.{js,jsx,json}\" ./bin/www"
+        "pretty": "prettier --write \"./**/*.{js,jsx,json}\" ./bin/www",
+	"prestart" : "bash prestart.sh"
     },
     "dependencies": {
         "acorn": ">=5.7.4",
