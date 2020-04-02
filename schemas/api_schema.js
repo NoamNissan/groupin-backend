@@ -1,5 +1,6 @@
 var { makeExecutableSchema } = require('graphql-tools');
 var errors = require('./api_schema_errors').errorName;
+const { Kind } = require('graphql/language');
 
 function strip_null(obj) {
     Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
@@ -96,9 +97,14 @@ type Query {
     ResessionsByUser(user_id: ID!, start: Int!, count: Int!): [Resession!]
 }
 
+input TimeRange {
+    start_date: Date!
+    end_date: Date!
+}
+
 type Mutation {
     createSession(title: String!, category: ID!): Session
-    editSession(session_id: ID!, title: String, description: String, category: ID, tags: String, start_date: Date, end_date: Date, 
+    editSession(session_id: ID!, title: String, description: String, category: ID, tags: String, time_range: TimeRange,
                  capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String): Boolean
     deleteSession(session_id: ID): Boolean
 }
@@ -196,8 +202,7 @@ type Mutation {
                     description,
                     category,
                     tags,
-                    start_date,
-                    end_date,
+                    time_range,
                     capacity,
                     attendees,
                     platform,
@@ -207,8 +212,26 @@ type Mutation {
                 { db, user },
                 info
             ) => {
-                // TODO: sanitize the date (end > start)
                 check_auth(user);
+
+                let start_date, end_date;
+
+                if (time_range) {
+                    // If the end date is before or equal to the start date
+                    if (
+                        time_range.end_date <= time_range.start_date ||
+                        // If the start_date is before the current time
+                        // TODO: how does this handle timezones? are we safe?
+                        time_range.start_date < new Date().getTime()
+                    ) {
+                        console.log(new Date().getTime());
+                        throw new Error(errors.INVALID_DATES);
+                    }
+
+                    ({ start_date, end_date } = time_range);
+                }
+
+                // TODO: allow to edit sessions that already ended?
 
                 const affected_rows = (
                     await db.Session.update(

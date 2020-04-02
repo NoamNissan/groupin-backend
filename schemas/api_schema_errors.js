@@ -10,6 +10,11 @@ const errors = new FormatError([
         name: 'UNLOGGED_USER',
         message: 'This action is prohibited for non-users',
         statusCode: 401
+    },
+    {
+        name: 'INVALID_DATES',
+        message: 'One or more of the dates passed is invalid',
+        statusCode: 400
     }
 ]);
 
