@@ -31,7 +31,6 @@ router.get('/auth/facebook/fail', (req, res) => {
 
 router.get('/auth/facebook/success', (req, res) => {
     // Successfull login landing page
-    // res.redirect('/');
     res.redirect('../../demo');
 
     // TODO
