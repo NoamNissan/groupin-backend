@@ -86,6 +86,8 @@ var root = app.use(
                 if (is_prod) {
                     return errors.errorType['INTERNAL_SERVER_ERROR'];
                 } else {
+                    // Return 500 in development too
+                    error.statusCode = 500;
                     return error;
                 }
             }
