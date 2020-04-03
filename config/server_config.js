@@ -4,14 +4,14 @@ module.exports = {
         container_name: 'groupin-mysql',
         docker_image: 'mysql/mysql-server:5.7',
         session_secret: 'groupin-session-salt-very-very-secret',
-        frontend_for_cors : 'http://localhost:3000'
+        frontend_for_cors: 'http://localhost:3000'
     },
     test: {
         root_password: 'p@sswordvery$ecret',
         container_name: 'groupin-mysql',
         docker_image: 'mysql/mysql-server:5.7',
         session_secret: 'groupin-session-salt-very-very-secret',
-        frontend_for_cors : 'http://localhost:3000'
+        frontend_for_cors: 'http://localhost:3000'
     },
 
     production: {
@@ -19,6 +19,6 @@ module.exports = {
         container_name: process.env.DB_CONTAINER_NAME,
         docker_image: process.env.DB_DOCKER_IMAGE,
         session_secret: process.env.SESSION_SECRET,
-        frontend_for_cors : process.env.FRONTEND_FOR_CORS
+        frontend_for_cors: process.env.FRONTEND_FOR_CORS
     }
 };
