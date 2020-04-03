@@ -32,7 +32,6 @@ passport.use(
         },
         function(accessToken, refreshToken, profile, done) {
             const { email, name, picture, id } = profile._json;
-
             db.User.findOne({where : {email}}).then((user) => {
                 if(user) {
                     return done(null, user);
