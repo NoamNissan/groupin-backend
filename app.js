@@ -21,19 +21,24 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(cors());
+var cors_options = {
+    origin: server_config.frontend_for_cors,
+    credentials: true
+};
+
+app.use(cors(cors_options));
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-if (env == 'production' || env == 'test') {
+if (env === 'production' || env === 'test') {
     var RedisStore = require('connect-redis')(session);
     var redisClient = redis.createClient();
 }
 
 var sess = {
     store:
-        env == 'production' || env == 'test'
+        env === 'production' || env === 'test'
             ? new RedisStore({ client: redisClient })
             : undefined,
     secret: server_config.session_secret,
@@ -42,7 +47,7 @@ var sess = {
     cookie: {}
 };
 
-if (env == 'production' || env == 'test') {
+if (env === 'production' || env === 'test') {
     app.set('trust proxy', 1);
     sess.cookie.secure = true;
 }
@@ -90,7 +95,9 @@ var root = app.use(
     }))
 );
 
-app.use('/', indexRouter);
+if (env === 'development') {
+    app.use('/', indexRouter);
+}
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

@@ -2,14 +2,11 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 const db = require('../models');
+const env = process.env.NODE_ENV || 'development';
+var server_config = require('../config/server_config.js')[env];
 
 //This file needs to run and have nothing to export
 require('../controllers/user.controller');
-
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-    res.send('respond with a resource');
-});
 
 router.get(
     '/auth/facebook',
@@ -25,17 +22,12 @@ router.get(
 );
 
 router.get('/auth/facebook/fail', (req, res) => {
-    // Failed login landing page
-    res.status(400).send('Something went wrong...');
+    res.status(400).send('Failed to login. please try again later');
 });
 
 router.get('/auth/facebook/success', (req, res) => {
     // Successfull login landing page
-    res.redirect('../../demo');
-
-    // TODO
-    // To integrate with FE we want to change to answer to something like this
-    // res.status(200).send('ok');
+    res.redirect(server_config.frontend_for_cors + '/');
 });
 
 router.get('/logout', (req, res) => {
@@ -48,15 +40,13 @@ router.get('/logout', (req, res) => {
     if (req.query.deregister) {
         db.User.destroy({ where: { provider_user_id: user_id } })
             .then(() => {
-                res.redirect('demo');
-                // res.status(200).send('ok');
+                res.redirect('/');
             })
             .catch(() => {
-                res.status(400).send('Failed to delete acount');
+                res.status(400).send('Failed to delete account');
             });
     } else {
-        res.redirect('demo');
-        // res.status(200).send('ok');
+        res.redirect('/');
     }
 });
 
@@ -64,8 +54,14 @@ router.get('/deregister', (req, res) => {
     res.redirect('logout?deregister=1');
 });
 
-//res.render('index', { title: 'Express' });
-router.get('/demo', (req, res) => {
-    res.render('demo', { title: 'Facebook Login demo', user: req.user });
-});
+if (env === 'development') {
+    /* GET users listing. */
+    router.get('/', function (req, res, next) {
+        res.send('respond with a resource');
+    });
+
+    router.get('/demo', (req, res) => {
+        res.render('demo', { title: 'Facebook Login demo', user: req.user });
+    });
+}
 module.exports = router;
