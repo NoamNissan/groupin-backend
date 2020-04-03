@@ -66,7 +66,7 @@ router.get('/deregister', (req, res) => {
 
 if (env === 'development') {
     router.get('/demo', (req, res) => {
-        res.render('demo', {title: 'Facebook Login demo', user: req.user});
+        res.render('demo', { title: 'Facebook Login demo', user: req.user });
     });
 }
 module.exports = router;
