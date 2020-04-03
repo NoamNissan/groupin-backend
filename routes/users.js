@@ -50,15 +50,13 @@ router.get('/logout', (req, res) => {
     if (req.query.deregister) {
         db.User.destroy({ where: { provider_user_id: user_id } })
             .then(() => {
-                res.redirect('demo');
-                // res.status(200).send('ok');
+                res.redirect('/');
             })
             .catch(() => {
                 res.status(400).send('Failed to delete acount');
             });
     } else {
-        res.redirect('demo');
-        // res.status(200).send('ok');
+        res.redirect('/');
     }
 });
 
@@ -66,8 +64,9 @@ router.get('/deregister', (req, res) => {
     res.redirect('logout?deregister=1');
 });
 
-//res.render('index', { title: 'Express' });
-router.get('/demo', (req, res) => {
-    res.render('demo', { title: 'Facebook Login demo', user: req.user });
-});
+if (env === 'development') {
+    router.get('/demo', (req, res) => {
+        res.render('demo', {title: 'Facebook Login demo', user: req.user});
+    });
+}
 module.exports = router;
