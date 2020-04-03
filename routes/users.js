@@ -31,7 +31,7 @@ router.get('/auth/facebook/fail', (req, res) => {
 
 router.get('/auth/facebook/success', (req, res) => {
     // Successfull login landing page
-    res.redirect('../../demo');
+    res.redirect('http://localhost:3000/');
 
     // TODO
     // To integrate with FE we want to change to answer to something like this
