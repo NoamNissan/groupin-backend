@@ -36,7 +36,9 @@ module.exports = {
         dialectOptions: {
             bigNumberStrings: true,
             ssl: {
-                ca: fs.readFileSync(__dirname + '/BaltimoreCyberTrustRoot.crt.pem')
+                ca: fs.readFileSync(
+                    __dirname + '/BaltimoreCyberTrustRoot.crt.pem'
+                )
             }
         },
         // use_env_variable: 'DATABASE_URL',
