@@ -30,7 +30,14 @@ module.exports = {
         database: process.env.DB_NAME,
         host: process.env.DB_HOSTNAME,
         dialect: 'mysql',
-        use_env_variable: 'DATABASE_URL',
+        dialectOptions: {
+            bigNumberStrings: true,
+            ssl: {
+                ca: fs.readFileSync(
+                    __dirname + '/BaltimoreCyberTrustRoot.crt.pem'
+                )
+            }
+        },
         define: {
             charset: 'utf8mb4',
             collate: 'utf8mb4_general_ci'
