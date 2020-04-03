@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 const db = require('../models');
+const env = process.env.NODE_ENV || 'development';
+var server_config = require('../config/server_config.js')[env];
 
 //This file needs to run and have nothing to export
 require('../controllers/user.controller');
@@ -31,7 +33,7 @@ router.get('/auth/facebook/fail', (req, res) => {
 
 router.get('/auth/facebook/success', (req, res) => {
     // Successfull login landing page
-    res.redirect('http://localhost:3000/');
+    res.redirect(server_config.frontend_for_cors + '/');
 
     // TODO
     // To integrate with FE we want to change to answer to something like this
