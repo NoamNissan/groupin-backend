@@ -21,7 +21,12 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(cors());
+var cors_options = {
+    origin: server_config.frontend_for_cors,
+    credentials: true
+};
+
+app.use(cors(cors_options));
 
 app.use(logger('dev'));
 app.use(express.json());
