@@ -1,6 +1,7 @@
 var { makeExecutableSchema } = require('graphql-tools');
 var errors = require('./api_schema_errors').errorName;
 const { Kind } = require('graphql/language');
+const { Op } = require('sequelize');
 
 function strip_null(obj) {
     Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
@@ -125,7 +126,13 @@ type Mutation {
             Categories: (parent, args, { db }, info) => db.Category.findAll(),
             FrontSessions: (parent, { start, count }, { db }, info) => {
                 check_sessions_count(count);
-                return db.Session.findAll({ offset: start, limit: count });
+                const now = new Date();
+                return db.Session.findAll({
+                    offset: start,
+                    limit: count,
+                    order: '"start_date" ASC',
+                    where: { end_date: { [Op.gt]: now } }
+                });
             },
             SessionsByUser: (
                 parent,
@@ -134,9 +141,12 @@ type Mutation {
                 info
             ) => {
                 check_sessions_count(count);
+                const now = new Date();
                 return db.Session.findAll({
                     where: { user_id },
-                    limit: count
+                    limit: count,
+                    order: '"start_date" ASC',
+                    where: { end_date: { [Op.gt]: now } }
                 });
             },
             SessionsByCategory: (
@@ -146,9 +156,12 @@ type Mutation {
                 info
             ) => {
                 check_sessions_count(count);
+                const now = new Date();
                 return db.Session.findAll({
                     where: { category },
-                    limit: count
+                    limit: count,
+                    order: '"start_date" ASC',
+                    where: { end_date: { [Op.gt]: now } }
                 });
             },
             ResessionsByUser: (
