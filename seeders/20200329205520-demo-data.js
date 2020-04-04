@@ -62,61 +62,61 @@ module.exports = {
         );
 
         if (env === 'development') {
-        var users = [
-            {
-                provider: 'FACEBOOK',
-                provider_user_id: '123456789ABCDEF',
-                display_name: 'פלוני אלמוני',
-                email: 'example@example.com',
-                createdAt: new Date(),
-                updatedAt: new Date()
-            },
-            {
-                provider: 'FACEBOOK',
-                provider_user_id: '22222222222222222222222222222',
-                display_name: 'אבישי סנסיי',
-                email: 'avishay@myfakemail.org',
-                createdAt: new Date(),
-                updatedAt: new Date()
-            },
-            {
-                provider: 'FACEBOOK',
-                provider_user_id: 'hello_this_is_also_a_valid_id',
-                display_name: 'עדי ביטי',
-                email: 'adi@biti.co.il',
-                createdAt: new Date(),
-                updatedAt: new Date()
-            },
-            {
-                provider: 'FACEBOOK',
-                provider_user_id: '1948',
-                display_name: 'ד"ר ישראל ישראלי',
-                email: 'israel@israeli.co.il',
-                createdAt: new Date(),
-                updatedAt: new Date()
-            }
-        ];
+            var users = [
+                {
+                    provider: 'FACEBOOK',
+                    provider_user_id: '123456789ABCDEF',
+                    display_name: 'פלוני אלמוני',
+                    email: 'example@example.com',
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                },
+                {
+                    provider: 'FACEBOOK',
+                    provider_user_id: '22222222222222222222222222222',
+                    display_name: 'אבישי סנסיי',
+                    email: 'avishay@myfakemail.org',
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                },
+                {
+                    provider: 'FACEBOOK',
+                    provider_user_id: 'hello_this_is_also_a_valid_id',
+                    display_name: 'עדי ביטי',
+                    email: 'adi@biti.co.il',
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                },
+                {
+                    provider: 'FACEBOOK',
+                    provider_user_id: '1948',
+                    display_name: 'ד"ר ישראל ישראלי',
+                    email: 'israel@israeli.co.il',
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                }
+            ];
 
-        var firstUserId = await queryInterface.bulkInsert('users', users);
-        await queryInterface.bulkInsert('sessions', [
-            {
-                user_id: getId(
-                    firstUserId,
-                    users,
-                    'provider_user_id',
-                    '22222222222222222222222222222'
-                ),
-                title: 'סדנת הכנת פיצה',
-                description:
-                    'הצטרפו אלי לסדנה בה אנסה ללמד אתכם את מתכון הפיצה המשפחתי שלי. מומלץ לצפות מהמטבח כדי שתוכלו להכין יחד איתי 😊 תרגישו חופשי לשאול שאלות בזמן הסדנה!',
+            var firstUserId = await queryInterface.bulkInsert('users', users);
+            await queryInterface.bulkInsert('sessions', [
+                {
+                    user_id: getId(
+                        firstUserId,
+                        users,
+                        'provider_user_id',
+                        '22222222222222222222222222222'
+                    ),
+                    title: 'סדנת הכנת פיצה',
+                    description:
+                        'הצטרפו אלי לסדנה בה אנסה ללמד אתכם את מתכון הפיצה המשפחתי שלי. מומלץ לצפות מהמטבח כדי שתוכלו להכין יחד איתי 😊 תרגישו חופשי לשאול שאלות בזמן הסדנה!',
                     category: getId(
                         firstCategoryId,
                         categories,
                         'name',
                         'שונות'
                     ),
-                start_date: new Date(),
-                end_date: moment(new Date()).add(40, 'm').toDate(),
+                    start_date: new Date(),
+                    end_date: moment(new Date()).add(40, 'm').toDate(),
                     createdAt: new Date(),
                     updatedAt: new Date()
                 },
@@ -222,10 +222,10 @@ module.exports = {
                     ),
                     start_date: new Date(),
                     end_date: moment(new Date()).add(110, 'm').toDate(),
-                createdAt: new Date(),
-                updatedAt: new Date()
-            }
-        ]);
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                }
+            ]);
         }
     },
 

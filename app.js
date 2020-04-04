@@ -105,7 +105,7 @@ var root = app.use(
 );
 
 if (env === 'development') {
-app.use('/', indexRouter);
+    app.use('/', indexRouter);
 }
 app.use('/users', usersRouter);
 
