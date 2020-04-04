@@ -1,5 +1,3 @@
-dotenv = require('dotenv');
-dotenv.config();
 module.exports = {
     development: {
         client_id: process.env.FACEBOOK_CLIENT_ID,
