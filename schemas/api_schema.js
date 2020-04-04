@@ -128,10 +128,10 @@ type Mutation {
                 check_sessions_count(count);
                 const now = new Date();
                 return db.Session.findAll({
+                    where: { end_date: { [Op.gt]: now } },
                     offset: start,
                     limit: count,
-                    order: '"start_date" ASC',
-                    where: { end_date: { [Op.gt]: now } }
+                    order: '"start_date" ASC'
                 });
             },
             SessionsByUser: (
@@ -143,10 +143,9 @@ type Mutation {
                 check_sessions_count(count);
                 const now = new Date();
                 return db.Session.findAll({
-                    where: { user_id },
+                    where: { user_id, end_date: { [Op.gt]: now } },
                     limit: count,
-                    order: '"start_date" ASC',
-                    where: { end_date: { [Op.gt]: now } }
+                    order: '"start_date" ASC'
                 });
             },
             SessionsByCategory: (
@@ -158,10 +157,9 @@ type Mutation {
                 check_sessions_count(count);
                 const now = new Date();
                 return db.Session.findAll({
-                    where: { category },
+                    where: { category, end_date: { [Op.gt]: now } },
                     limit: count,
-                    order: '"start_date" ASC',
-                    where: { end_date: { [Op.gt]: now } }
+                    order: '"start_date" ASC'
                 });
             },
             ResessionsByUser: (
