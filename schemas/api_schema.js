@@ -133,7 +133,7 @@ type Mutation {
                     where: { end_date: { [Op.gt]: now }, active: true },
                     offset: start,
                     limit: count,
-                    order: '"start_date" ASC'
+                    order: ['start_date', 'ASC']
                 });
             },
             SessionsByUser: (
@@ -147,7 +147,7 @@ type Mutation {
                 return db.Session.findAll({
                     where: { user_id },
                     limit: count,
-                    order: '"start_date" ASC'
+                    order: ['start_date', 'ASC']
                 });
             },
             SessionsByCategory: (
@@ -165,7 +165,7 @@ type Mutation {
                         active: true
                     },
                     limit: count,
-                    order: '"start_date" ASC'
+                    order: ['start_date', 'ASC']
                 });
             },
             ResessionsByUser: (
@@ -193,10 +193,13 @@ type Mutation {
                 });
             },
             // A hacky naive seach for now, to get sessions that contain the given text in one of several fields
-            // TODO: create a true seaching infrastructure, maybe like elastic-search? 
+            // TODO: create a true seaching infrastructure, maybe like elastic-search?
             SearchSessions: (parent, { search_query }, { db }, info) => {
                 var words = search_query.split(' ');
-                var sqlWords = words.map(s => s.trim()).filter(String).map((word) => ({ [Op.like]: `%${word.trim()}%` }));
+                var sqlWords = words
+                    .map((s) => s.trim())
+                    .filter(String)
+                    .map((word) => ({ [Op.like]: `%${word.trim()}%` }));
                 var condition = {
                     [Op.or]: [
                         {
