@@ -133,7 +133,7 @@ type Mutation {
                     where: { end_date: { [Op.gt]: now }, active: true },
                     offset: start,
                     limit: count,
-                    order: ['start_date', 'ASC']
+                    order: [['start_date', 'ASC']]
                 });
             },
             SessionsByUser: (
@@ -147,7 +147,7 @@ type Mutation {
                 return db.Session.findAll({
                     where: { user_id },
                     limit: count,
-                    order: ['start_date', 'ASC']
+                    order: [['start_date', 'ASC']]
                 });
             },
             SessionsByCategory: (
@@ -165,7 +165,7 @@ type Mutation {
                         active: true
                     },
                     limit: count,
-                    order: ['start_date', 'ASC']
+                    order: [['start_date', 'ASC']]
                 });
             },
             ResessionsByUser: (
