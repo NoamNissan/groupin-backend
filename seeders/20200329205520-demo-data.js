@@ -117,6 +117,7 @@ module.exports = {
                     ),
                     start_date: new Date(),
                     end_date: moment(new Date()).add(40, 'm').toDate(),
+                    active: true,
                     createdAt: new Date(),
                     updatedAt: new Date()
                 },
@@ -138,6 +139,7 @@ module.exports = {
                     ),
                     start_date: new Date(),
                     end_date: moment(new Date()).add(60, 'm').toDate(),
+                    active: true,
                     createdAt: new Date(),
                     updatedAt: new Date()
                 },
@@ -159,6 +161,7 @@ module.exports = {
                     ),
                     start_date: new Date(),
                     end_date: moment(new Date()).add(15, 'm').toDate(),
+                    active: true,
                     createdAt: new Date(),
                     updatedAt: new Date()
                 },
@@ -180,6 +183,7 @@ module.exports = {
                     ),
                     start_date: new Date(),
                     end_date: moment(new Date()).add(120, 'm').toDate(),
+                    active: true,
                     createdAt: new Date(),
                     updatedAt: new Date()
                 },
@@ -200,6 +204,7 @@ module.exports = {
                         'משפחה'
                     ),
                     start_date: new Date(),
+                    active: true,
                     end_date: moment(new Date()).add(35, 'm').toDate(),
                     createdAt: new Date(),
                     updatedAt: new Date()
@@ -222,6 +227,7 @@ module.exports = {
                     ),
                     start_date: new Date(),
                     end_date: moment(new Date()).add(110, 'm').toDate(),
+                    active: true,
                     createdAt: new Date(),
                     updatedAt: new Date()
                 }

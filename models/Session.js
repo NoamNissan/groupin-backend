@@ -73,6 +73,11 @@ module.exports = function (sequelize, DataTypes) {
                     model: 'resessions',
                     key: 'id'
                 }
+            },
+            active: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
             }
         },
         {

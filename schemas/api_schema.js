@@ -63,6 +63,7 @@ type Session {
     platform_media_id: String!
     img_source: String
     resession_id: ID
+    active: Boolean!
 }
 
 type Category {
@@ -107,7 +108,7 @@ input TimeRange {
 type Mutation {
     createSession(title: String!, category: ID!): Session
     editSession(session_id: ID!, title: String, description: String, category: ID, tags: String, time_range: TimeRange,
-                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String): Boolean
+                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String, active: Boolean): Boolean
     deleteSession(session_id: ID): Boolean
 }
 `
@@ -129,7 +130,7 @@ type Mutation {
                 check_sessions_count(count);
                 const now = new Date();
                 return db.Session.findAll({
-                    where: { end_date: { [Op.gt]: now } },
+                    where: { end_date: { [Op.gt]: now }, active: true },
                     offset: start,
                     limit: count,
                     order: '"start_date" ASC'
@@ -158,7 +159,11 @@ type Mutation {
                 check_sessions_count(count);
                 const now = new Date();
                 return db.Session.findAll({
-                    where: { category, end_date: { [Op.gt]: now } },
+                    where: {
+                        category,
+                        end_date: { [Op.gt]: now },
+                        active: true
+                    },
                     limit: count,
                     order: '"start_date" ASC'
                 });
@@ -252,7 +257,8 @@ type Mutation {
                     attendees,
                     platform,
                     platform_media_id,
-                    img_source
+                    img_source,
+                    active
                 },
                 { db, user },
                 info
@@ -296,7 +302,8 @@ type Mutation {
                             attendees,
                             platform,
                             platform_media_id,
-                            img_source
+                            img_source,
+                            active
                         }),
                         {
                             where: { id: session_id, user_id: user.id }
