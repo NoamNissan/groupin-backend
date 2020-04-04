@@ -31,14 +31,14 @@ app.use(cors(cors_options));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-if (env === 'productionnnn' || env === 'test') {
+if (env === 'production' || env === 'test') {
     var RedisStore = require('connect-redis')(session);
     var redisClient = redis.createClient();
 }
 
 var sess = {
     store:
-        env === 'productionnnn' || env === 'test'
+        env === 'production' || env === 'test'
             ? new RedisStore({ client: redisClient })
             : undefined,
     secret: server_config.session_secret,
@@ -47,7 +47,7 @@ var sess = {
     cookie: {}
 };
 
-if (env === 'productionnnn' || env === 'test') {
+if (env === 'production' || env === 'test') {
     app.set('trust proxy', 1);
     sess.cookie.secure = true;
 }
@@ -86,6 +86,8 @@ var root = app.use(
                 if (is_prod) {
                     return errors.errorType['INTERNAL_SERVER_ERROR'];
                 } else {
+                    // Return 500 in development too
+                    error.statusCode = 500;
                     return error;
                 }
             }
@@ -95,7 +97,9 @@ var root = app.use(
     }))
 );
 
+if (env === 'development') {
 app.use('/', indexRouter);
+}
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

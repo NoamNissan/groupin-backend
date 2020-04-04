@@ -41,7 +41,6 @@ module.exports = {
                 )
             }
         },
-        // use_env_variable: 'DATABASE_URL',
         define: {
             charset: 'utf8mb4',
             collate: 'utf8mb4_general_ci'

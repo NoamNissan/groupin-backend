@@ -127,10 +127,15 @@ type Mutation {
                 check_sessions_count(count);
                 return db.Session.findAll({ offset: start, limit: count });
             },
-            SessionsByUser: (parent, { id, start, count }, { db }, info) => {
+            SessionsByUser: (
+                parent,
+                { user_id, start, count },
+                { db },
+                info
+            ) => {
                 check_sessions_count(count);
                 return db.Session.findAll({
-                    where: { user_id: id },
+                    where: { user_id },
                     limit: count
                 });
             },
@@ -142,7 +147,7 @@ type Mutation {
             ) => {
                 check_sessions_count(count);
                 return db.Session.findAll({
-                    where: { category: category },
+                    where: { category },
                     limit: count
                 });
             },
@@ -154,7 +159,7 @@ type Mutation {
             ) => {
                 check_sessions_count(count);
                 return db.Resession.findAll({
-                    where: { user_id: user_id },
+                    where: { user_id },
                     limit: count
                 });
             },
@@ -166,7 +171,7 @@ type Mutation {
             ) => {
                 check_sessions_count(count);
                 return db.Resession.findAll({
-                    where: { category: category },
+                    where: { category },
                     limit: count
                 });
             }
@@ -188,8 +193,8 @@ type Mutation {
                 tomorrow.setDate(new Date().getDate() + 1);
                 return db.Session.create({
                     user_id: user.id,
-                    title: title,
-                    category: category,
+                    title,
+                    category,
                     start_date: tomorrow,
                     end_date: tomorrow
                 });
@@ -241,17 +246,17 @@ type Mutation {
                 const affected_rows = (
                     await db.Session.update(
                         strip_null({
-                            title: title,
-                            description: description,
-                            category: category,
-                            tags: tags,
-                            start_date: start_date,
-                            end_date: end_date,
-                            capacity: capacity,
-                            attendees: attendees,
-                            platform: platform,
-                            platform_media_id: platform_media_id,
-                            img_source: img_source
+                            title,
+                            description,
+                            category,
+                            tags,
+                            start_date,
+                            end_date,
+                            capacity,
+                            attendees,
+                            platform,
+                            platform_media_id,
+                            img_source
                         }),
                         {
                             where: { id: session_id, user_id: user.id }
