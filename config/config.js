@@ -1,5 +1,6 @@
 var fs = require('fs');
-
+dotenv = require('dotenv');
+dotenv.config();
 module.exports = {
     development: {
         username: 'groupin',

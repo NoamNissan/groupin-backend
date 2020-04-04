@@ -33,7 +33,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 if (env === 'production' || env === 'test') {
     var RedisStore = require('connect-redis')(session);
-    var redisClient = redis.createClient();
+    var redisClient = redis.createClient(
+        process.env.REDIS_CACHE_PORT,
+        process.env.REDIS_CACHE_HOSTNAME,
+        {
+            auth_pass: process.env.REDIS_CACHE_KEY,
+            tls: { servername: process.env.REDIS_CACHE_HOSTNAME }
+        }
+    );
 }
 
 var sess = {
