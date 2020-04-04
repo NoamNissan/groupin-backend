@@ -127,10 +127,15 @@ type Mutation {
                 check_sessions_count(count);
                 return db.Session.findAll({ offset: start, limit: count });
             },
-            SessionsByUser: (parent, { id, start, count }, { db }, info) => {
+            SessionsByUser: (
+                parent,
+                { user_id, start, count },
+                { db },
+                info
+            ) => {
                 check_sessions_count(count);
                 return db.Session.findAll({
-                    where: { user_id: id },
+                    where: { user_id: user_id },
                     limit: count
                 });
             },
