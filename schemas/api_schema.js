@@ -143,7 +143,7 @@ type Mutation {
                 check_sessions_count(count);
                 const now = new Date();
                 return db.Session.findAll({
-                    where: { user_id, end_date: { [Op.gt]: now } },
+                    where: { user_id },
                     limit: count,
                     order: '"start_date" ASC'
                 });
