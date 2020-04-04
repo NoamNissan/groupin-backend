@@ -15,6 +15,11 @@ const errors = new FormatError([
         name: 'INVALID_DATES',
         message: 'One or more of the dates passed are invalid',
         statusCode: 400
+    },
+    {
+        name: 'INVALID_STRINGS',
+        message: 'One or more of the strings passed should be alphanumeric and isn\'t',
+        statusCode: 400
     }
 ]);
 
