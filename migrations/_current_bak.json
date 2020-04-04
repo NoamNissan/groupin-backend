@@ -169,6 +169,14 @@
                     "field": "resession_id",
                     "seqType": "Sequelize.INTEGER.UNSIGNED"
                 },
+                "active": {
+                    "allowNull": false,
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "active",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -251,5 +259,5 @@
             "indexes": []
         }
     },
-    "revision": 1
+    "revision": 2
 }

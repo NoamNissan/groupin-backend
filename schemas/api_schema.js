@@ -61,6 +61,7 @@ type Session {
     attendees: Int
     platform: Platform!
     platform_media_id: String
+    platform_media_pwd: String
     img_source: String
     resession_id: ID
     active: Boolean!
@@ -108,7 +109,7 @@ input TimeRange {
 type Mutation {
     createSession(title: String!, category: ID!): Session
     editSession(session_id: ID!, title: String, description: String, category: ID, tags: String, time_range: TimeRange,
-                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String, active: Boolean): Boolean
+                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, platform_media_pwd: String, img_source: String, active: Boolean): Boolean
     deleteSession(session_id: ID): Boolean
 }
 `
@@ -260,6 +261,7 @@ type Mutation {
                     attendees,
                     platform,
                     platform_media_id,
+                    platform_media_pwd,
                     img_source,
                     active
                 },
@@ -305,6 +307,7 @@ type Mutation {
                             attendees,
                             platform,
                             platform_media_id,
+                            platform_media_pwd,
                             img_source,
                             active
                         }),
