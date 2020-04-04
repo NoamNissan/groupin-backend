@@ -95,6 +95,7 @@ type Query {
     SessionsByUser(user_id: ID!, start: Int!, count: Int!): [Session!]
     ResessionsByCategory(category: ID!, start: Int!, count: Int!): [Resession!]
     ResessionsByUser(user_id: ID!, start: Int!, count: Int!): [Resession!]
+    SearchSessions(keywords: ID!): [Session!]
 }
 
 input TimeRange {
@@ -173,6 +174,35 @@ type Mutation {
                 return db.Resession.findAll({
                     where: { category },
                     limit: count
+                });
+            },
+            SearchSessions: (parent, { keywords }, { db }, info) => {
+                const Op = db.Sequelize.Op;
+                var words = keywords.split(' ');
+                var sqlWords = words.map(function (word) {
+                    return { [Op.like]: '%'+word+'%' };
+                });
+                var condition = {
+                    [Op.or]: [
+                        {
+                            description: {
+                                [Op.or]: sqlWords
+                            }
+                        },
+                        {
+                            title: {
+                                [Op.or]: sqlWords
+                            }
+                        },
+                        {
+                            tags: {
+                                [Op.or]: sqlWords
+                            }
+                        }
+                    ]
+                };
+                return db.Session.findAll({
+                    where: condition
                 });
             }
         },
