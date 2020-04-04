@@ -95,7 +95,7 @@ type Query {
     SessionsByUser(user_id: ID!, start: Int!, count: Int!): [Session!]
     ResessionsByCategory(category: ID!, start: Int!, count: Int!): [Resession!]
     ResessionsByUser(user_id: ID!, start: Int!, count: Int!): [Resession!]
-    SearchSessions(keywords: ID!): [Session!]
+    SearchSessions(search_query: String!): [Session!]
 }
 
 input TimeRange {
@@ -176,12 +176,12 @@ type Mutation {
                     limit: count
                 });
             },
-            SearchSessions: (parent, { keywords }, { db }, info) => {
+            // A hacky naive seach for now, to get sessions that contain the given text in one of several fields
+            // TODO: create a true seaching infrastructure, maybe like elastic-search? 
+            SearchSessions: (parent, { search_query }, { db }, info) => {
                 const Op = db.Sequelize.Op;
-                var words = keywords.split(' ');
-                var sqlWords = words.map(function (word) {
-                    return { [Op.like]: '%'+word+'%' };
-                });
+                var words = search_query.split(' ');
+                var sqlWords = words.map(s => s.trim()).filter(String).map((word) => ({ [Op.like]: `%${word.trim()}%` }));
                 var condition = {
                     [Op.or]: [
                         {
