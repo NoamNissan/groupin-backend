@@ -40,13 +40,13 @@ router.get('/logout', (req, res) => {
     if (req.query.deregister) {
         db.User.destroy({ where: { provider_user_id: user_id } })
             .then(() => {
-                res.redirect('/');
+                res.redirect(server_config.frontend_for_cors + '/');
             })
             .catch(() => {
                 res.status(400).send('Failed to delete account');
             });
     } else {
-        res.redirect('/');
+        res.redirect(server_config.frontend_for_cors + '/');
     }
 });
 
