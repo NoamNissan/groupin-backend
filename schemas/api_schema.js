@@ -60,7 +60,7 @@ type Session {
     capacity: Int
     attendees: Int
     platform: Platform!
-    platform_media_id: String!
+    platform_media_id: String
     img_source: String
     resession_id: ID
     active: Boolean!
