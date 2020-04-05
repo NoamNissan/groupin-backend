@@ -24,7 +24,7 @@ function check_sessions_count(count) {
 }
 
 function check_alphanumeric_string(str) {
-    if (str && !str.match(/^[0-9a-z]+$/)) {
+    if (str && !str.match(/^[0-9a-z]+$/i)) {
         throw new Error(errors.INVALID_STRINGS);
     }
 }
