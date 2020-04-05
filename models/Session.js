@@ -59,7 +59,11 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: true
             },
             platform_media_id: {
-                type: DataTypes.STRING(128),
+                type: DataTypes.STRING(64),
+                allowNull: true
+            },
+            platform_media_pwd: {
+                type: DataTypes.STRING(64),
                 allowNull: true
             },
             img_source: {
@@ -73,6 +77,11 @@ module.exports = function (sequelize, DataTypes) {
                     model: 'resessions',
                     key: 'id'
                 }
+            },
+            active: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
             }
         },
         {

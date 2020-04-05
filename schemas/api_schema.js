@@ -1,6 +1,7 @@
 var { makeExecutableSchema } = require('graphql-tools');
 var errors = require('./api_schema_errors').errorName;
 const { Kind } = require('graphql/language');
+const { Op } = require('sequelize');
 
 function strip_null(obj) {
     Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
@@ -19,6 +20,12 @@ const MAX_SESSIONS_COUNT = 50;
 function check_sessions_count(count) {
     if (count > MAX_SESSIONS_COUNT) {
         throw new Error(errors.COUNT_TOO_HIGH);
+    }
+}
+
+function check_alphanumeric_string(str) {
+    if (str && !str.match(/^[0-9a-z]+$/i)) {
+        throw new Error(errors.INVALID_STRINGS);
     }
 }
 
@@ -59,9 +66,11 @@ type Session {
     capacity: Int
     attendees: Int
     platform: Platform!
-    platform_media_id: String!
+    platform_media_id: String
+    platform_media_pwd: String
     img_source: String
     resession_id: ID
+    active: Boolean!
 }
 
 type Category {
@@ -95,6 +104,7 @@ type Query {
     SessionsByUser(user_id: ID!, start: Int!, count: Int!): [Session!]
     ResessionsByCategory(category: ID!, start: Int!, count: Int!): [Resession!]
     ResessionsByUser(user_id: ID!, start: Int!, count: Int!): [Resession!]
+    SearchSessions(search_query: String!): [Session!]
 }
 
 input TimeRange {
@@ -105,7 +115,7 @@ input TimeRange {
 type Mutation {
     createSession(title: String!, category: ID!): Session
     editSession(session_id: ID!, title: String, description: String, category: ID, tags: String, time_range: TimeRange,
-                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String): Boolean
+                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, platform_media_pwd: String, img_source: String, active: Boolean): Boolean
     deleteSession(session_id: ID): Boolean
 }
 `
@@ -125,7 +135,13 @@ type Mutation {
             Categories: (parent, args, { db }, info) => db.Category.findAll(),
             FrontSessions: (parent, { start, count }, { db }, info) => {
                 check_sessions_count(count);
-                return db.Session.findAll({ offset: start, limit: count });
+                const now = new Date();
+                return db.Session.findAll({
+                    where: { end_date: { [Op.gt]: now }, active: true },
+                    offset: start,
+                    limit: count,
+                    order: [['start_date', 'ASC']]
+                });
             },
             SessionsByUser: (
                 parent,
@@ -136,7 +152,9 @@ type Mutation {
                 check_sessions_count(count);
                 return db.Session.findAll({
                     where: { user_id },
-                    limit: count
+                    offset: start,
+                    limit: count,
+                    order: [['start_date', 'ASC']]
                 });
             },
             SessionsByCategory: (
@@ -146,9 +164,15 @@ type Mutation {
                 info
             ) => {
                 check_sessions_count(count);
+                const now = new Date();
                 return db.Session.findAll({
-                    where: { category },
-                    limit: count
+                    where: {
+                        category,
+                        end_date: { [Op.gt]: now },
+                        active: true
+                    },
+                    limit: count,
+                    order: [['start_date', 'ASC']]
                 });
             },
             ResessionsByUser: (
@@ -173,6 +197,37 @@ type Mutation {
                 return db.Resession.findAll({
                     where: { category },
                     limit: count
+                });
+            },
+            // A hacky naive seach for now, to get sessions that contain the given text in one of several fields
+            // TODO: create a true seaching infrastructure, maybe like elastic-search?
+            SearchSessions: (parent, { search_query }, { db }, info) => {
+                var words = search_query.split(' ');
+                var sqlWords = words
+                    .map((s) => s.trim())
+                    .filter(String)
+                    .map((word) => ({ [Op.like]: `%${word.trim()}%` }));
+                var condition = {
+                    [Op.or]: [
+                        {
+                            description: {
+                                [Op.or]: sqlWords
+                            }
+                        },
+                        {
+                            title: {
+                                [Op.or]: sqlWords
+                            }
+                        },
+                        {
+                            tags: {
+                                [Op.or]: sqlWords
+                            }
+                        }
+                    ]
+                };
+                return db.Session.findAll({
+                    where: condition
                 });
             }
         },
@@ -212,12 +267,16 @@ type Mutation {
                     attendees,
                     platform,
                     platform_media_id,
-                    img_source
+                    platform_media_pwd,
+                    img_source,
+                    active
                 },
                 { db, user },
                 info
             ) => {
                 check_auth(user);
+                check_alphanumeric_string(platform_media_id);
+                check_alphanumeric_string(platform_media_pwd);
 
                 let start_date, end_date;
 
@@ -256,7 +315,9 @@ type Mutation {
                             attendees,
                             platform,
                             platform_media_id,
-                            img_source
+                            platform_media_pwd,
+                            img_source,
+                            active
                         }),
                         {
                             where: { id: session_id, user_id: user.id }
