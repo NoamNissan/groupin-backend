@@ -153,7 +153,12 @@
                 "platform_media_id": {
                     "allowNull": true,
                     "field": "platform_media_id",
-                    "seqType": "Sequelize.STRING(128)"
+                    "seqType": "Sequelize.STRING(64)"
+                },
+                "platform_media_pwd": {
+                    "allowNull": true,
+                    "field": "platform_media_pwd",
+                    "seqType": "Sequelize.STRING(64)"
                 },
                 "img_source": {
                     "allowNull": true,
@@ -259,5 +264,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 3
 }

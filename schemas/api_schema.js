@@ -23,6 +23,12 @@ function check_sessions_count(count) {
     }
 }
 
+function check_alphanumeric_string(str) {
+    if (str && !str.match(/^[0-9a-z]+$/i)) {
+        throw new Error(errors.INVALID_STRINGS);
+    }
+}
+
 // IDK if User needs to export more stuff, fit it to your needs (OAuth)
 const schema = makeExecutableSchema({
     typeDefs: [
@@ -61,6 +67,7 @@ type Session {
     attendees: Int
     platform: Platform!
     platform_media_id: String
+    platform_media_pwd: String
     img_source: String
     resession_id: ID
     active: Boolean!
@@ -108,7 +115,7 @@ input TimeRange {
 type Mutation {
     createSession(title: String!, category: ID!): Session
     editSession(session_id: ID!, title: String, description: String, category: ID, tags: String, time_range: TimeRange,
-                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, img_source: String, active: Boolean): Boolean
+                 capacity: Int, attendees: Int, platform: Platform, platform_media_id: String, platform_media_pwd: String, img_source: String, active: Boolean): Boolean
     deleteSession(session_id: ID): Boolean
 }
 `
@@ -143,9 +150,9 @@ type Mutation {
                 info
             ) => {
                 check_sessions_count(count);
-                const now = new Date();
                 return db.Session.findAll({
                     where: { user_id },
+                    offset: start,
                     limit: count,
                     order: [['start_date', 'ASC']]
                 });
@@ -260,6 +267,7 @@ type Mutation {
                     attendees,
                     platform,
                     platform_media_id,
+                    platform_media_pwd,
                     img_source,
                     active
                 },
@@ -267,6 +275,8 @@ type Mutation {
                 info
             ) => {
                 check_auth(user);
+                check_alphanumeric_string(platform_media_id);
+                check_alphanumeric_string(platform_media_pwd);
 
                 let start_date, end_date;
 
@@ -305,6 +315,7 @@ type Mutation {
                             attendees,
                             platform,
                             platform_media_id,
+                            platform_media_pwd,
                             img_source,
                             active
                         }),
